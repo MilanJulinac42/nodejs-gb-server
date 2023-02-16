@@ -4,7 +4,7 @@ import Basket, { IBasketModel, IBasket } from "../models/Basket";
 // CREATE a new gift basket
 export const createBasket = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const { name, description, price, profit, type, giftBasketItems, isSerbian } = req.body;
+		const { name, description, price, profit, type, giftBasketItems, basketType, isSerbian } = req.body;
 
 		const newBasket: IBasketModel = new Basket({
 			name,
@@ -13,6 +13,7 @@ export const createBasket = async (req: Request, res: Response): Promise<void> =
 			profit,
 			type,
 			giftBasketItems,
+			basketType,
 			isSerbian
 		});
 
@@ -27,7 +28,7 @@ export const createBasket = async (req: Request, res: Response): Promise<void> =
 // READ all gift baskets
 export const getAllBaskets = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const baskets = await Basket.find().populate("giftBasketItems");
+		const baskets = await Basket.find().populate("giftBasketItems", "basketType");
 
 		res.status(200).json({ message: "Baskets found", baskets });
 	} catch (error) {
@@ -40,7 +41,7 @@ export const getBasketById = async (req: Request, res: Response): Promise<void> 
 	try {
 		const { id } = req.params;
 
-		const basket = await Basket.findById(id).populate("giftBasketItems");
+		const basket = await Basket.findById(id).populate("giftBasketItems", "basketType");
 
 		if (basket) {
 			res.status(200).json({ message: "Basket found", basket });
@@ -59,7 +60,7 @@ export const updateBasketById = async (req: Request, res: Response): Promise<voi
 
 		const updatedFields: Partial<IBasket> = req.body;
 
-		const updatedBasket: IBasketModel | null = await Basket.findByIdAndUpdate(id, { $set: updatedFields }, { new: true }).populate("giftBasketItems");
+		const updatedBasket: IBasketModel | null = await Basket.findByIdAndUpdate(id, { $set: updatedFields }, { new: true }).populate("giftBasketItems", "basketType");
 
 		if (updatedBasket) {
 			res.status(200).json({ message: "Basket updated successfully", basket: updatedBasket });
