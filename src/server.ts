@@ -10,10 +10,9 @@ import basketTypeRoutes from "./routes/BasketType";
 const router = express();
 
 // Connect to MongoDB
-mongoose
-	.connect(config.mongo.url, { w: "majority", retryWrites: true })
+mongoose.connect(config.mongo.url, config.mongo.options)
 	.then(() => {
-		Logging.info("Connected to MongoDB.");
+		Logging.info(`Connected to MongoDB.`);
 		StartServer();
 	})
 	.catch((error) => {
