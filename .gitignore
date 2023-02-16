@@ -1,0 +1,14 @@
+# Directories
+node_modules/
+dist/
+coverage/
+logs/
+*.log
+
+# Files
+.env
+.env.*
+*.env.local
+*.log
+*.swp
+.DS_Store
