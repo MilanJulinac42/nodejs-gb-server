@@ -4,9 +4,9 @@ import BasketType, { IBasketType, IBasketTypeModel } from "../models/BasketType"
 // CREATE a new basket type
 export const createBasketType = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 	try {
-		const { name, description, price, isSerbian } = req.body;
+		const { name, description, price, color, isSerbian } = req.body;
 
-		const newBasketType: IBasketTypeModel = new BasketType({ name, description, price, isSerbian });
+		const newBasketType: IBasketTypeModel = new BasketType({ name, description, price, color, isSerbian });
 
 		await newBasketType.save();
 
@@ -46,27 +46,22 @@ export const getBasketTypeById = async (req: Request, res: Response, next: NextF
 
 // UPDATE a basket type by ID
 export const updateBasketTypeById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const { id } = req.params;
+	try {
+		const { id } = req.params;
 
-    const updatedFields: Partial<IBasketType> = req.body;
+		const updatedFields: Partial<IBasketType> = req.body;
 
-    const updatedBasketType: IBasketTypeModel | null = await BasketType.findByIdAndUpdate(
-      id,
-      { $set: updatedFields },
-      { new: true }
-    );
+		const updatedBasketType: IBasketTypeModel | null = await BasketType.findByIdAndUpdate(id, { $set: updatedFields }, { new: true });
 
-    if (updatedBasketType) {
-      res.status(200).json({ message: "Basket type updated successfully", basketType: updatedBasketType });
-    } else {
-      res.status(404).json({ message: "Basket type not found" });
-    }
-  } catch (error) {
-    res.status(500).json({ message: "Error updating basket type", error });
-  }
+		if (updatedBasketType) {
+			res.status(200).json({ message: "Basket type updated successfully", basketType: updatedBasketType });
+		} else {
+			res.status(404).json({ message: "Basket type not found" });
+		}
+	} catch (error) {
+		res.status(500).json({ message: "Error updating basket type", error });
+	}
 };
-
 
 // DELETE a basket type by ID
 export const deleteBasketTypeById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
