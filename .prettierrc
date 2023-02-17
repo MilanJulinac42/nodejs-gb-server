@@ -1,8 +1,8 @@
 {
   "singleQuote": false,
-  "printWidth": 200,
+  "printWidth": 120,
   "proseWrap": "always",
-  "tabWidth": 2,
+  "tabWidth": 4,
   "useTabs": true,
   "trailingComma": "none",
   "bracketSpacing": true,
