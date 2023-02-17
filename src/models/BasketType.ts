@@ -7,6 +7,7 @@ export interface IBasketType {
 	color: string;
 	giftBasket: ObjectId[];
 	isSerbian: boolean;
+	deleted: boolean;
 }
 
 export interface IBasketTypeModel extends IBasketType, Document {}
@@ -17,7 +18,8 @@ const BaksetTypeSchema: Schema = new Schema({
 	price: { type: Number, required: true },
 	color: { type: String, required: true },
 	giftBasket: [{ type: Schema.Types.ObjectId, ref: "Basket" }],
-	isSerbian: { type: Boolean, required: true, default: false }
+	isSerbian: { type: Boolean, required: true, default: false },
+	deleted: { type: Boolean, required: true, default: false }
 });
 
 export default mongoose.model<IBasketTypeModel>("BasketType", BaksetTypeSchema);

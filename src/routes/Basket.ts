@@ -5,6 +5,7 @@ import {
   getBasketById,
   updateBasketById,
   deleteBasket,
+  softDeleteBasketById
 } from "../conrollers/Basket";
 
 const router: Router = Router();
@@ -23,5 +24,8 @@ router.patch("/update/:id", updateBasketById);
 
 // DELETE a basket item by ID
 router.delete("/delete/:id", deleteBasket);
+
+// SOFT DELETE a basket item by ID
+router.delete("/remove/:id", softDeleteBasketById);
 
 export default router;
