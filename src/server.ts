@@ -6,14 +6,14 @@ import Logging from "./library/Logging";
 import authorRoutes from "./routes/Author";
 import basketItemRoutes from "./routes/BasketItem";
 import basketTypeRoutes from "./routes/BasketType";
+import giftBasketRoutes from "./routes/Basket";
 
 const router = express();
 
 // Connect to MongoDB
-mongoose
-	.connect(config.mongo.url, { w: "majority", retryWrites: true })
+mongoose.connect(config.mongo.url, config.mongo.options)
 	.then(() => {
-		Logging.info("Connected to MongoDB.");
+		Logging.info(`Connected to MongoDB.`);
 		StartServer();
 	})
 	.catch((error) => {
@@ -52,6 +52,7 @@ const StartServer = () => {
 	router.use("/authors", authorRoutes);
 	router.use("/basket-item", basketItemRoutes);
 	router.use("/basket-type", basketTypeRoutes);
+	router.use("/gift-basket", giftBasketRoutes);
 
 	// Healthcheck
 	router.get("/ping", (req, res, next) => res.status(200).json({ message: "ping" }));
