@@ -65,32 +65,44 @@ export const updateBasketItemById = async (req: Request, res: Response, next: Ne
 
 // DELETE a basket item by ID
 export const deleteBasketItemById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const { id } = req.params;
+	try {
+		const { id } = req.params;
 
-    const deletedBasketItem: IBasketItemModel | null = await BasketItem.findByIdAndDelete(id);
+		const deletedBasketItem: IBasketItemModel | null = await BasketItem.findByIdAndDelete(id);
 
-    if (deletedBasketItem) {
-      const basket: IBasketModel | null = await Basket.findByIdAndUpdate(
-        deletedBasketItem.giftBasket,
-        { $pull: { basketItems: deletedBasketItem._id } },
-        { new: true }
-      );
+		if (deletedBasketItem) {
+			const basket: IBasketModel | null = await Basket.findByIdAndUpdate(deletedBasketItem.giftBasket, { $pull: { basketItems: deletedBasketItem._id } }, { new: true });
 
-      if (basket) {
-        res.status(200).json({
-          message: 'Basket item deleted successfully',
-          basketItem: deletedBasketItem,
-          basket: basket,
-        });
-      } else {
-        res.status(404).json({ message: 'Basket not found' });
-      }
-    } else {
-      res.status(404).json({ message: 'Basket item not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Error deleting basket item', error });
-  }
+			if (basket) {
+				res.status(200).json({
+					message: "Basket item deleted successfully",
+					basketItem: deletedBasketItem,
+					basket: basket
+				});
+			} else {
+				res.status(404).json({ message: "Basket not found" });
+			}
+		} else {
+			res.status(404).json({ message: "Basket item not found" });
+		}
+	} catch (error) {
+		res.status(500).json({ message: "Error deleting basket item", error });
+	}
 };
 
+// SOFT DELETE basket item by id
+export const softDeleteBasketItemById = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const { id } = req.params;
+
+		const deletedBasketItem: IBasketItemModel | null = await BasketItem.findByIdAndUpdate(id, { deleted: true }, { new: true });
+
+		if (deletedBasketItem) {
+			res.status(200).json({ message: "Basket item deleted succesfully", basket: deletedBasketItem });
+		} else {
+			res.status(404).json({ message: "Basket item not found" });
+		}
+	} catch (error) {
+		res.status(500).json({ message: "Error deleting basket item", error });
+	}
+};
