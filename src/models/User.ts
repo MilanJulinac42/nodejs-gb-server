@@ -25,7 +25,7 @@ const UserSchema: Schema = new Schema(
 		firstName: { type: "string", required: true },
 		lastName: { type: "string", required: true },
 		email: { type: "string", required: true },
-		password: { type: "string", required: true },
+		passwordHash: { type: "string", required: true },
 		deleted: { type: "boolean", default: false },
 		role: { type: "string", enum: Object.values(UserRole), default: UserRole.CUSTOMER }
 	},

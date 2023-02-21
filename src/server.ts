@@ -7,6 +7,7 @@ import authorRoutes from "./routes/Author";
 import basketItemRoutes from "./routes/BasketItem";
 import basketTypeRoutes from "./routes/BasketType";
 import giftBasketRoutes from "./routes/Basket";
+import authRoutes from "./routes/Auth";
 
 const router = express();
 
@@ -53,6 +54,7 @@ const StartServer = () => {
 	router.use("/basket-item", basketItemRoutes);
 	router.use("/basket-type", basketTypeRoutes);
 	router.use("/gift-basket", giftBasketRoutes);
+	router.use("/auth", authRoutes);
 
 	// Healthcheck
 	router.get("/ping", (req, res, next) => res.status(200).json({ message: "ping" }));
