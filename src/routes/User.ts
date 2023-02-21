@@ -1,7 +1,5 @@
 import { Router } from "express";
 import {
-	redisterUser,
-  loginUser,
 	getUsers,
 	getUserById,
 	updateUserById,
@@ -10,12 +8,6 @@ import {
 } from "../conrollers/User";
 
 const router: Router = Router();
-
-// CREATE a new user
-router.post("/create", redisterUser);
-
-// LOGIN a user
-router.post("/login", loginUser);
 
 // READ all users
 router.get("/find-all", getUsers);
