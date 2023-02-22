@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User, { IUserModel } from '../models/User';
@@ -6,12 +6,18 @@ import User, { IUserModel } from '../models/User';
 // Register a new user
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, confirmPassword } = req.body;
 
     // Check if user already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
       res.status(400).json({ message: 'User already exists' });
+      return;
+    }
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      res.status(400).json({ message: 'Passwords do not match' });
       return;
     }
 
@@ -60,11 +66,22 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     }
 
     // Create and sign JWT
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as string);
+    const token = jwt.sign({ id: user._id, role: user.role, email: user.email }, process.env.JWT_SECRET_KEY as string);
 
     // Send response
     res.status(200).json({ token });
   } catch (error) {
     res.status(500).json({ message: 'Error logging in user', error });
+  }
+};
+
+// Logout user
+export const logoutUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    // Clear the JWT cookie
+    res.clearCookie('jwt');
+    res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error logging out', error });
   }
 };
