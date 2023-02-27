@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
-import Basket, { IBasketModel, IBasket } from "../models/Basket";
-import BasketItem, { IBasketItemModel } from "../models/BasketItem";
-import BasketType, { IBasketTypeModel } from "../models/BasketType";
+import Basket, { IBasketModel, IBasket } from "../models/Basket.model";
+import BasketItem, { IBasketItemModel } from "../models/BasketItem.model";
+import BasketType, { IBasketTypeModel } from "../models/BasketType.model";
 
 // CREATE a new gift basket
 export const createBasket = async (req: Request, res: Response): Promise<void> => {

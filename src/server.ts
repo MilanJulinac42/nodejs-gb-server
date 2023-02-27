@@ -3,11 +3,12 @@ import http from "http";
 import mongoose from "mongoose";
 import { config } from "./config/config";
 import Logging from "./library/Logging";
-import authorRoutes from "./routes/Author";
-import basketItemRoutes from "./routes/BasketItem";
-import basketTypeRoutes from "./routes/BasketType";
-import giftBasketRoutes from "./routes/Basket";
-import authRoutes from "./routes/Auth";
+import authorRoutes from "./routes/author.route";
+import basketItemRoutes from "./routes/basketItem.route";
+import basketTypeRoutes from "./routes/basketType.route";
+import giftBasketRoutes from "./routes/basket.route";
+import authRoutes from "./routes/auth.route";
+import cookieParser from 'cookie-parser'
 
 const router = express();
 
@@ -35,6 +36,7 @@ const StartServer = () => {
 
 	router.use(express.urlencoded({ extended: true }));
 	router.use(express.json());
+	router.use(cookieParser());
 
 	// Rules of API
 	router.use((req, res, next) => {

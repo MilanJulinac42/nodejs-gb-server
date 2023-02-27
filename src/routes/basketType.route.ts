@@ -6,7 +6,7 @@ import {
   updateBasketTypeById,
   deleteBasketTypeById,
   softDeleteBasketTypeById
-} from "../conrollers/BasketType";
+} from "../conrollers/basketType.controller";
 
 const router: Router = Router();
 
