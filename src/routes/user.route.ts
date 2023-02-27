@@ -5,7 +5,7 @@ import {
 	updateUserById,
 	deleteUserById,
 	softDeleteUserById
-} from "../conrollers/User";
+} from "../conrollers/user.controller";
 
 const router: Router = Router();
 

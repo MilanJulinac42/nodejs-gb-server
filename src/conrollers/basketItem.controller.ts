@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import Basket, { IBasketModel } from "../models/Basket";
-import BasketItem, { IBasketItem, IBasketItemModel } from "../models/BasketItem";
+import Basket, { IBasketModel } from "../models/Basket.model";
+import BasketItem, { IBasketItem, IBasketItemModel } from "../models/BasketItem.model";
 
 // CREATE a new basket item
 export const createBasketItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
