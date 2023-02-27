@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User, { IUserModel } from '../models/User';
+import User, { IUserModel } from '../models/User.model';
+
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "";
 
 // Register a new user
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
@@ -37,7 +39,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
     const savedUser = await newUser.save();
 
     // Create and sign JWT
-    const token = jwt.sign({ id: savedUser._id, role: savedUser.role, email: savedUser.email }, process.env.JWT_SECRET_KEY as string);
+    const token = jwt.sign({ id: savedUser._id, role: savedUser.role, email: savedUser.email }, JWT_SECRET_KEY);
 
     // Send response
     res.status(201).json({ token });
@@ -66,10 +68,13 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     }
 
     // Create and sign JWT
-    const token = jwt.sign({ id: user._id, role: user.role, email: user.email }, process.env.JWT_SECRET_KEY as string);
+    const token = jwt.sign({ id: user._id, role: user.role, email: user.email }, JWT_SECRET_KEY, { expiresIn: '1h' });
+
+    // Set JWT as a cookie
+    res.cookie('jwt', token, { httpOnly: true, secure: false, sameSite: 'none', maxAge: 60 * 60 * 1000 }); // Expires after 1 hour
 
     // Send response
-    res.status(200).json({ token });
+    res.status(200).json({ message: "User logged in successfully", token: token });
   } catch (error) {
     res.status(500).json({ message: 'Error logging in user', error });
   }
@@ -78,10 +83,20 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 // Logout user
 export const logoutUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Clear the JWT cookie
     res.clearCookie('jwt');
-    res.status(200).json({ message: 'Logout successful' });
+
+    res.status(200).json({ message: "Logout successful" });
   } catch (error) {
-    res.status(500).json({ message: 'Error logging out', error });
+    res.status(500).json({ message: "Error logging out", error });
   }
 };
+
+    // const token = req.headers.authorization?.split(" ")[1];
+
+    // // Check if token exists
+    // if (!token) {
+    //   throw new Error("Unauthorized");
+    // }
+
+    // // Verify token
+    // jwt.verify(token, JWT_SECRET_KEY);
