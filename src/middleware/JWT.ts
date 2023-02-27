@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import User, { IUser } from '../models/User';
+import User, { IUser } from '../models/User.model';
 
 interface AuthRequest extends Request {
   user?: IUser;
@@ -12,6 +12,7 @@ interface ITokenPayload {
   id: string;
   email: string;
   role: string;
+  exp: number;
 }
 
 const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
@@ -25,6 +26,11 @@ const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunctio
 
     // Verify token
     const decodedToken = jwt.verify(token, JWT_SECRET_KEY) as ITokenPayload;
+
+    // Check if token is expired
+    if (decodedToken.exp * 1000 < Date.now()) {
+      throw new Error('Unauthorized');
+    }
 
     // Get user from decoded token
     const user = await User.findById(decodedToken.id);
