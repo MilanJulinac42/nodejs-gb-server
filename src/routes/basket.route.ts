@@ -7,12 +7,13 @@ import {
 	deleteBasket,
 	softDeleteBasketById
 } from "../conrollers/basket.controller";
+import { isAdmin } from "../middleware/IsAdmin";
 import authMiddleware from "../middleware/JWT";
 
 const router: Router = Router();
 
 // CREATE a new basket item
-router.post("/create", authMiddleware, createBasket);
+router.post("/create", authMiddleware, isAdmin, createBasket);
 
 // READ all basket items
 router.get("/find-all", getAllBaskets);
@@ -21,12 +22,12 @@ router.get("/find-all", getAllBaskets);
 router.get("/find/:id", getBasketById);
 
 // UPDATE a basket item by ID
-router.patch("/update/:id", authMiddleware, updateBasketById);
+router.patch("/update/:id", authMiddleware, isAdmin, updateBasketById);
 
 // DELETE a basket item by ID
-router.delete("/delete/:id", authMiddleware, deleteBasket);
+router.delete("/delete/:id", authMiddleware, isAdmin, deleteBasket);
 
 // SOFT DELETE a basket item by ID
-router.delete("/remove/:id", authMiddleware, softDeleteBasketById);
+router.delete("/remove/:id", authMiddleware, isAdmin, softDeleteBasketById);
 
 export default router;
