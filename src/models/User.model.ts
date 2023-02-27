@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, ObjectId, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 
 enum UserRole {
@@ -13,6 +13,8 @@ export interface IUser {
 	passwordHash: string;
 	deleted: boolean;
 	role: UserRole;
+	paymentIntents: string[];
+	orders: ObjectId[];
 }
 
 export interface IUserModel extends IUser, Document {
@@ -22,25 +24,27 @@ export interface IUserModel extends IUser, Document {
 
 const UserSchema: Schema = new Schema(
 	{
-		firstName: { type: "string", required: true },
-		lastName: { type: "string", required: true },
-		email: { type: "string", required: true },
-		passwordHash: { type: "string", required: true },
+		firstName: { type: String, required: true },
+		lastName: { type: String, required: true },
+		email: { type: String, required: true },
+		passwordHash: { type: String, required: true },
 		deleted: { type: "boolean", default: false },
-		role: { type: "string", enum: Object.values(UserRole), default: UserRole.CUSTOMER }
+		role: { type: String, enum: Object.values(UserRole), default: UserRole.CUSTOMER },
+		paymentIntents: [{ type: Schema.Types.String }],
+		orders: [{ type: Schema.Types.ObjectId, ref: "Order" }]
 	},
 	{ timestamps: true }
 );
 
 UserSchema.methods.hashPassword = async function (password: string): Promise<string> {
-  const saltRounds = 10;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  return hashedPassword;
+	const saltRounds = 10;
+	const hashedPassword = await bcrypt.hash(password, saltRounds);
+	return hashedPassword;
 };
 
 UserSchema.methods.checkPassword = async function (password: string): Promise<boolean> {
-  const isMatch = await bcrypt.compare(password, this.passwordHash);
-  return isMatch;
+	const isMatch = await bcrypt.compare(password, this.passwordHash);
+	return isMatch;
 };
 
 export default mongoose.model<IUserModel>("User", UserSchema);
