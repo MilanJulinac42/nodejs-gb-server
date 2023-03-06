@@ -15,6 +15,8 @@ export interface IUser {
 	role: UserRole;
 	paymentIntents: string[];
 	orders: ObjectId[];
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface IUserModel extends IUser, Document {

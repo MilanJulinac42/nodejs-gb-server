@@ -8,18 +8,23 @@ export interface IBasketType {
 	giftBasket: ObjectId[];
 	isSerbian: boolean;
 	deleted: boolean;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface IBasketTypeModel extends IBasketType, Document {}
 
-const BaksetTypeSchema: Schema = new Schema({
-	name: { type: String, required: true },
-	description: { type: String, required: true },
-	price: { type: Number, required: true },
-	color: { type: String, required: true },
-	giftBasket: [{ type: Schema.Types.ObjectId, ref: "Basket" }],
-	isSerbian: { type: Boolean, required: true, default: false },
-	deleted: { type: Boolean, required: true, default: false }
-});
+const BaksetTypeSchema: Schema = new Schema(
+	{
+		name: { type: String, required: true },
+		description: { type: String, required: true },
+		price: { type: Number, required: true },
+		color: { type: String, required: true },
+		giftBasket: [{ type: Schema.Types.ObjectId, ref: "Basket" }],
+		isSerbian: { type: Boolean, required: true, default: false },
+		deleted: { type: Boolean, required: true, default: false }
+	},
+	{ timestamps: true }
+);
 
 export default mongoose.model<IBasketTypeModel>("BasketType", BaksetTypeSchema);
