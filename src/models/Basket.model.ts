@@ -13,6 +13,8 @@ export interface IBasket {
 	price: number;
 	profit: number;
 	inStock: number;
+	sold: number;
+	liked: number;
 	type: GiftBasketType;
 	giftBasketItems: ObjectId[];
 	basketType: ObjectId;
@@ -28,7 +30,14 @@ const BasketSchema: Schema = new Schema({
 	price: { type: Number, required: true },
 	profit: { type: Number, required: true },
 	inStock: { type: Number, required: true },
-	type: { type: String, required: true, enum: [GiftBasketType.COORPORATIVE, GiftBasketType.HAPPY_BIRTHDAY, GiftBasketType.LOVERS, GiftBasketType.OTHER], default: GiftBasketType.OTHER },
+	sold: { type: Number, required: true },
+	liked: { type: Number, required: true },
+	type: {
+		type: String,
+		required: true,
+		enum: [GiftBasketType.COORPORATIVE, GiftBasketType.HAPPY_BIRTHDAY, GiftBasketType.LOVERS, GiftBasketType.OTHER],
+		default: GiftBasketType.OTHER
+	},
 	giftBasketItems: [{ type: Schema.Types.ObjectId, ref: "BasketItem" }],
 	basketType: { type: Schema.Types.ObjectId, ref: "BasketType" },
 	isSerbian: { type: Boolean, required: true, default: false },

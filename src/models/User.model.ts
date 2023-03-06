@@ -28,7 +28,7 @@ const UserSchema: Schema = new Schema(
 		lastName: { type: String, required: true },
 		email: { type: String, required: true },
 		passwordHash: { type: String, required: true },
-		deleted: { type: "boolean", default: false },
+		deleted: { type: Boolean, default: false },
 		role: { type: String, enum: Object.values(UserRole), default: UserRole.CUSTOMER },
 		paymentIntents: [{ type: Schema.Types.String }],
 		orders: [{ type: Schema.Types.ObjectId, ref: "Order" }]
