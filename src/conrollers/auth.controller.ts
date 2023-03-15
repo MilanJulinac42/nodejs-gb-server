@@ -90,13 +90,3 @@ export const logoutUser = async (req: Request, res: Response): Promise<void> => 
     res.status(500).json({ message: "Error logging out", error });
   }
 };
-
-    // const token = req.headers.authorization?.split(" ")[1];
-
-    // // Check if token exists
-    // if (!token) {
-    //   throw new Error("Unauthorized");
-    // }
-
-    // // Verify token
-    // jwt.verify(token, JWT_SECRET_KEY);
