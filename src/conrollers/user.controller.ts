@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import User, { IUserModel } from "../models/User.model";
+import UserService from "../services/user.service";
 
 // READ all users
 export const getUsers = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const users: IUserModel[] = await User.find();
+		const users: IUserModel[] | null = await UserService.getUsers();
 		res.status(200).json({ users });
 	} catch (error) {
 		res.status(500).json({ message: "Error getting users", error });
@@ -15,7 +16,7 @@ export const getUsers = async (req: Request, res: Response): Promise<void> => {
 export const getUserById = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { id } = req.params;
-		const user: IUserModel | null = await User.findById(id);
+		const user: IUserModel | null = await UserService.getUserById(id);
 		if (user) {
 			res.status(200).json({ user });
 		} else {
@@ -31,7 +32,7 @@ export const updateUserById = async (req: Request, res: Response): Promise<void>
 	try {
 		const { id } = req.params;
 		const updatedFields: Partial<IUserModel> = req.body;
-		const updatedUser: IUserModel | null = await User.findByIdAndUpdate(id, { $set: updatedFields }, { new: true });
+		const updatedUser: IUserModel | null = await UserService.updateUserById(id, updatedFields);
 		if (updatedUser) {
 			res.status(200).json({ message: "User updated successfully", user: updatedUser });
 		} else {
@@ -46,7 +47,7 @@ export const updateUserById = async (req: Request, res: Response): Promise<void>
 export const deleteUserById = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { id } = req.params;
-		const deletedUser: IUserModel | null = await User.findByIdAndDelete(id);
+		const deletedUser: IUserModel | null = await UserService.deleteUserById(id);
 		if (deletedUser) {
 			res.status(200).json({ message: "User deleted successfully", user: deletedUser });
 		} else {
@@ -63,7 +64,7 @@ export const softDeleteUserById = async (req: Request, res: Response): Promise<v
 		const { id } = req.params;
 
 		const updatedFields = { deleted: true };
-		const updatedUser: IUserModel | null = await User.findByIdAndUpdate(id, { $set: updatedFields }, { new: true });
+		const updatedUser: IUserModel | null = await UserService.softDeleteUserById(id);
 
 		if (updatedUser) {
 			res.status(200).json({ message: "User soft deleted successfully", user: updatedUser });
