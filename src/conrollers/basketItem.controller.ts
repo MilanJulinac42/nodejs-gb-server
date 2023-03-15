@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import Basket, { IBasketModel } from "../models/Basket.model";
 import BasketItem, { IBasketItem, IBasketItemModel } from "../models/BasketItem.model";
+import BasketItemService from "../services/basketItem.service";
 
 // CREATE a new basket item
 export const createBasketItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -9,8 +9,9 @@ export const createBasketItem = async (req: Request, res: Response, next: NextFu
 
 		const newBasketItem: IBasketItemModel = new BasketItem({ name, description, price, weight, isSerbian });
 
-		await newBasketItem.save();
-		res.status(201).json({ message: "Basket item created successfully", basketItem: newBasketItem });
+		const createdBasketItem = await BasketItemService.createBasketItem(newBasketItem);
+
+		res.status(201).json({ message: "Basket item created successfully", basketItem: createdBasketItem });
 	} catch (error) {
 		res.status(500).json({ message: "Error creating basket item", error });
 	}
@@ -19,7 +20,7 @@ export const createBasketItem = async (req: Request, res: Response, next: NextFu
 // READ all basket items
 export const getBasketItems = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 	try {
-		const basketItems: IBasketItemModel[] = await BasketItem.find();
+		const basketItems: IBasketItemModel[] = await BasketItemService.getBasketItems();
 
 		res.status(200).json({ basketItems });
 	} catch (error) {
@@ -32,7 +33,7 @@ export const getBasketItemById = async (req: Request, res: Response, next: NextF
 	try {
 		const { id } = req.params;
 
-		const basketItem: IBasketItemModel | null = await BasketItem.findById(id);
+		const basketItem: IBasketItemModel | null = await BasketItemService.getBasketItemById(id);
 
 		if (basketItem) {
 			res.status(200).json({ basketItem });
@@ -51,7 +52,10 @@ export const updateBasketItemById = async (req: Request, res: Response, next: Ne
 
 		const updatedFields: Partial<IBasketItem> = req.body;
 
-		const updatedBasketItem: IBasketItemModel | null = await BasketItem.findByIdAndUpdate(id, { $set: updatedFields }, { new: true });
+		const updatedBasketItem: IBasketItemModel | null = await BasketItemService.updateBasketItemById(
+			id,
+			updatedFields
+		);
 
 		if (updatedBasketItem) {
 			res.status(200).json({ message: "Basket item updated successfully", basketItem: updatedBasketItem });
@@ -68,11 +72,9 @@ export const deleteBasketItemById = async (req: Request, res: Response, next: Ne
 	try {
 		const { id } = req.params;
 
-		const deletedBasketItem: IBasketItemModel | null = await BasketItem.findByIdAndDelete(id);
+		const { deletedBasketItem, basket } = await BasketItemService.deleteBasketItemById(id);
 
 		if (deletedBasketItem) {
-			const basket: IBasketModel | null = await Basket.findByIdAndUpdate(deletedBasketItem.giftBasket, { $pull: { basketItems: deletedBasketItem._id } }, { new: true });
-
 			if (basket) {
 				res.status(200).json({
 					message: "Basket item deleted successfully",
@@ -95,7 +97,11 @@ export const softDeleteBasketItemById = async (req: Request, res: Response): Pro
 	try {
 		const { id } = req.params;
 
-		const deletedBasketItem: IBasketItemModel | null = await BasketItem.findByIdAndUpdate(id, { deleted: true }, { new: true });
+		const deletedBasketItem: IBasketItemModel | null = await BasketItem.findByIdAndUpdate(
+			id,
+			{ deleted: true },
+			{ new: true }
+		);
 
 		if (deletedBasketItem) {
 			res.status(200).json({ message: "Basket item deleted succesfully", basket: deletedBasketItem });
