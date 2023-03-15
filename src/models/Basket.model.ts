@@ -7,6 +7,11 @@ enum GiftBasketType {
 	OTHER = "OTHER"
 }
 
+export interface IBasketItemQuantity {
+	item: ObjectId;
+	quantity: number;
+}
+
 export interface IBasket {
 	name: string;
 	description: string;
@@ -16,7 +21,7 @@ export interface IBasket {
 	sold: number;
 	liked: number;
 	type: GiftBasketType;
-	giftBasketItems: ObjectId[];
+	giftBasketItems: IBasketItemQuantity[];
 	basketType: ObjectId;
 	isSerbian: boolean;
 	deleted: boolean;
@@ -46,7 +51,12 @@ const BasketSchema: Schema = new Schema(
 			],
 			default: GiftBasketType.OTHER
 		},
-		giftBasketItems: [{ type: Schema.Types.ObjectId, ref: "BasketItem" }],
+		giftBasketItems: [
+			{
+				item: { type: Schema.Types.ObjectId, ref: "BasketItem" },
+				quantity: { type: Number, required: true }
+			}
+		],
 		basketType: { type: Schema.Types.ObjectId, ref: "BasketType" },
 		isSerbian: { type: Boolean, required: true, default: false },
 		deleted: { type: Boolean, required: true, default: false }
