@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import User, { IUserModel } from "../models/User.model";
+import User, { IUserModel, UserRole } from "../models/User.model";
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "";
 
@@ -34,7 +34,7 @@ class AuthService {
 			email,
 			passwordHash: hashedPassword,
 			deleted: false,
-			role: "customer"
+			role: UserRole.ADMIN,
 		});
 		const savedUser = await newUser.save();
 

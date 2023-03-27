@@ -1,3 +1,4 @@
+import mongoose, { ObjectId } from "mongoose";
 import Basket, { IBasket, IBasketModel } from "../models/Basket.model";
 import BasketItem, { IBasketItemModel } from "../models/BasketItem.model";
 import BasketType, { IBasketTypeModel } from "../models/BasketType.model";
@@ -15,7 +16,12 @@ interface CreateBasketInput {
 
 class BasketService {
 	public async createBasket(basket: CreateBasketInput): Promise<IBasketModel> {
-		const newBasket: IBasketModel = new Basket(basket);
+		const giftBasketItems = basket.giftBasketItems.map((itemQuantity) => ({
+			item: new mongoose.Types.ObjectId(itemQuantity.item),
+			quantity: itemQuantity.quantity
+		}));
+
+		const newBasket: IBasketModel = new Basket({ ...basket, giftBasketItems });
 
 		const savedBasket = await newBasket.save();
 
@@ -37,11 +43,11 @@ class BasketService {
 	}
 
 	public async getAllBaskets(): Promise<IBasketModel[] | null> {
-		return Basket.find().populate("giftBaksetItems", "basketType");
+		return Basket.find().populate("giftBasketItems.item", "name description price").populate("basketType", "name");
 	}
 
 	public async getBasketById(id: string): Promise<IBasketModel | null> {
-		return Basket.findById(id).populate("giftBaksetItems", "basketType");
+		return Basket.findById(id).populate("giftBasketItems.item", "name description price").populate("basketType", "name");
 	}
 
 	public async updateBasketById(id: string, updatedFields: Partial<IBasket>): Promise<IBasketModel | null> {

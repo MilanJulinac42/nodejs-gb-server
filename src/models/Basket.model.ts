@@ -37,9 +37,9 @@ const BasketSchema: Schema = new Schema(
 		description: { type: String, required: true },
 		price: { type: Number, required: true },
 		profit: { type: Number, required: true },
-		inStock: { type: Number, required: true },
-		sold: { type: Number, required: true },
-		liked: { type: Number, required: true },
+		inStock: { type: Number, required: false, default: 0 },
+		sold: { type: Number, required: false, default: 0 },
+		liked: { type: Number, required: false, default: 0 },
 		type: {
 			type: String,
 			required: true,
