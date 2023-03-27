@@ -7,6 +7,7 @@ interface AuthRequest extends Request {
 
 export const isAdmin = (req: AuthRequest, res: Response, next: NextFunction): void => {
   const user = req.user;
+  console.log(user?.role)
 
   if (!user || user.role !== 'admin') {
     res.status(403).json({ message: 'Forbidden' });
