@@ -14,6 +14,7 @@ export interface IUser {
 	deleted: boolean;
 	role: UserRole;
 	paymentIntents: string[];
+	stripeCustomerId: string;
 	orders: ObjectId[];
 	createdAt: Date;
 	updatedAt: Date;
@@ -33,6 +34,7 @@ const UserSchema: Schema = new Schema(
 		deleted: { type: Boolean, default: false },
 		role: { type: String, enum: Object.values(UserRole), default: UserRole.CUSTOMER },
 		paymentIntents: [{ type: Schema.Types.String }],
+		stripeCustomerId: { type: String },
 		orders: [{ type: Schema.Types.ObjectId, ref: "Order" }]
 	},
 	{ timestamps: true }
