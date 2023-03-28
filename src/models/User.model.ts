@@ -1,6 +1,9 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import { IShoppingCart } from "./ShoppingCart.model";
+import Stripe from 'stripe';
+
+const stripe = new Stripe('your_stripe_api_key', {apiVersion: '2022-11-15'});
 
 export enum UserRole {
 	ADMIN = "admin",
@@ -52,6 +55,42 @@ UserSchema.methods.hashPassword = async function (password: string): Promise<str
 UserSchema.methods.checkPassword = async function (password: string): Promise<boolean> {
 	const isMatch = await bcrypt.compare(password, this.passwordHash);
 	return isMatch;
+};
+
+UserSchema.methods.createStripeCustomer = async function () {
+  const customer = await stripe.customers.create({
+    email: this.email,
+  });
+  this.stripeCustomerId = customer.id;
+  await this.save();
+  return customer;
+};
+
+UserSchema.methods.createPayment = async function (amount: number, currency: string, paymentMethodId: string) {
+  if (!this.stripeCustomerId) {
+    throw new Error('User does not have a Stripe Customer ID');
+  }
+
+  // Create a payment intent
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: amount, // Amount should be in the smallest currency unit (e.g., cents)
+    currency: currency, // The currency code, like 'usd'
+    customer: this.stripeCustomerId,
+    payment_method: paymentMethodId, // The payment method ID (obtained from the client-side, e.g., using Stripe Elements)
+    off_session: false, // To indicate that the payment is not a recurring or future-dated payment
+    confirm: true, // To immediately confirm the payment intent
+  });
+
+  // Handle the payment result
+  if (paymentIntent.status === 'succeeded') {
+    // Payment is successful, you can update the user's paymentIntents and other data as needed
+    this.paymentIntents.push(paymentIntent.id);
+    await this.save();
+    return { success: true, message: 'Payment successful', paymentIntent };
+  } else {
+    // Payment failed, handle the error
+    return { success: false, message: 'Payment failed', error: paymentIntent.last_payment_error };
+  }
 };
 
 export default mongoose.model<IUserModel>("User", UserSchema);

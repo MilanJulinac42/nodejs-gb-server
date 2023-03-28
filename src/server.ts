@@ -10,6 +10,7 @@ import giftBasketRoutes from "./routes/basket.route";
 import authRoutes from "./routes/auth.route";
 import cookieParser from 'cookie-parser'
 import shoppingCartRoutes from './routes/shoppingCart.route';
+import stripeRoutes from './routes/stripe.route';
 
 const router = express();
 
@@ -59,6 +60,7 @@ const StartServer = () => {
 	router.use("/gift-basket", giftBasketRoutes);
 	router.use("/auth", authRoutes);
 	router.use('/shopping-cart', shoppingCartRoutes);
+	router.use('/payment', stripeRoutes);
 
 	// Healthcheck
 	router.get("/ping", (req, res, next) => res.status(200).json({ message: "ping" }));
