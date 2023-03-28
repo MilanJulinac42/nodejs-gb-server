@@ -1,4 +1,4 @@
-import mongoose, { ObjectId } from "mongoose";
+import mongoose from "mongoose";
 import Basket, { IBasket, IBasketModel } from "../models/Basket.model";
 import BasketItem, { IBasketItemModel } from "../models/BasketItem.model";
 import BasketType, { IBasketTypeModel } from "../models/BasketType.model";

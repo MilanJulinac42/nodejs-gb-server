@@ -1,5 +1,6 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
 import bcrypt from "bcrypt";
+import { IShoppingCart } from "./ShoppingCart.model";
 
 export enum UserRole {
 	ADMIN = "admin",
@@ -16,6 +17,7 @@ export interface IUser {
 	paymentIntents: string[];
 	stripeCustomerId: string;
 	orders: ObjectId[];
+	shoppingCart: ObjectId | IShoppingCart;
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -35,7 +37,8 @@ const UserSchema: Schema = new Schema(
 		role: { type: String, enum: Object.values(UserRole), default: UserRole.CUSTOMER },
 		paymentIntents: [{ type: Schema.Types.String }],
 		stripeCustomerId: { type: String },
-		orders: [{ type: Schema.Types.ObjectId, ref: "Order" }]
+		orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
+		shoppingCart: { type: Schema.Types.ObjectId, ref: "ShoppingCart" },
 	},
 	{ timestamps: true }
 );
