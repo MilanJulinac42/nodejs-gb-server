@@ -1,5 +1,4 @@
 import ShoppingCartModel, { IShoppingCartModel, IShoppingCartItem } from '../models/ShoppingCart.model';
-import mongoose from 'mongoose';
 
 export async function getShoppingCart(userId: string): Promise<IShoppingCartModel | null> {
   const shoppingCart = await ShoppingCartModel.findOne({ user: userId }).populate('items.basket');

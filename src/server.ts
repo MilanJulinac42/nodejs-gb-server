@@ -3,7 +3,6 @@ import http from "http";
 import mongoose from "mongoose";
 import { config } from "./config/config";
 import Logging from "./library/Logging";
-import authorRoutes from "./routes/author.route";
 import basketItemRoutes from "./routes/basketItem.route";
 import basketTypeRoutes from "./routes/basketType.route";
 import giftBasketRoutes from "./routes/basket.route";
@@ -53,7 +52,6 @@ const StartServer = () => {
 	});
 
 	// Routes
-	router.use("/authors", authorRoutes);
 	router.use("/basket-item", basketItemRoutes);
 	router.use("/basket-type", basketTypeRoutes);
 	router.use("/gift-basket", giftBasketRoutes);

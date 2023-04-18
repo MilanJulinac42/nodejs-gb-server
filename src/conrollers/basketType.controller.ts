@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import BasketType, { IBasketType, IBasketTypeModel } from "../models/BasketType.model";
 import BasketTypeService from "../services/basketType.service";
 
 // CREATE a new basket type
-export const createBasketType = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const createBasketType = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { name, description, price, color, isSerbian } = req.body;
 
@@ -18,7 +18,7 @@ export const createBasketType = async (req: Request, res: Response, next: NextFu
 };
 
 // READ all basket types
-export const getBasketTypes = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const getBasketTypes = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const basketTypes: IBasketTypeModel[] = await BasketTypeService.getBasketTypes();
 
@@ -29,7 +29,7 @@ export const getBasketTypes = async (req: Request, res: Response, next: NextFunc
 };
 
 // READ a single basket type by ID
-export const getBasketTypeById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const getBasketTypeById = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { id } = req.params;
 
@@ -46,7 +46,7 @@ export const getBasketTypeById = async (req: Request, res: Response, next: NextF
 };
 
 // UPDATE a basket type by ID
-export const updateBasketTypeById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const updateBasketTypeById = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { id } = req.params;
 
@@ -68,7 +68,7 @@ export const updateBasketTypeById = async (req: Request, res: Response, next: Ne
 };
 
 // DELETE a basket type by ID
-export const deleteBasketTypeById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const deleteBasketTypeById = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { id } = req.params;
 
@@ -93,7 +93,7 @@ export const deleteBasketTypeById = async (req: Request, res: Response, next: Ne
 };
 
 // SOFT DELETE basket type by id
-export const softDeleteBasketTypeById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const softDeleteBasketTypeById = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { id } = req.params;
 

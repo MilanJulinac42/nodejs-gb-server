@@ -1,7 +1,5 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import AuthService from "../services/auth.service";
-
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || "";
 
 // Register a new user
 export const registerUser = async (req: Request, res: Response): Promise<void> => {

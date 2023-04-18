@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import BasketItem, { IBasketItem, IBasketItemModel } from "../models/BasketItem.model";
 import BasketItemService from "../services/basketItem.service";
 
 // CREATE a new basket item
-export const createBasketItem = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const createBasketItem = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { name, description, price, weight, isSerbian } = req.body;
 
@@ -18,7 +18,7 @@ export const createBasketItem = async (req: Request, res: Response, next: NextFu
 };
 
 // READ all basket items
-export const getBasketItems = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const getBasketItems = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const basketItems: IBasketItemModel[] = await BasketItemService.getBasketItems();
 
@@ -29,7 +29,7 @@ export const getBasketItems = async (req: Request, res: Response, next: NextFunc
 };
 
 // READ a single basket item by ID
-export const getBasketItemById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const getBasketItemById = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { id } = req.params;
 
@@ -46,7 +46,7 @@ export const getBasketItemById = async (req: Request, res: Response, next: NextF
 };
 
 // UPDATE a basket item by ID
-export const updateBasketItemById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const updateBasketItemById = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { id } = req.params;
 
@@ -68,7 +68,7 @@ export const updateBasketItemById = async (req: Request, res: Response, next: Ne
 };
 
 // DELETE a basket item by ID
-export const deleteBasketItemById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const deleteBasketItemById = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { id } = req.params;
 
