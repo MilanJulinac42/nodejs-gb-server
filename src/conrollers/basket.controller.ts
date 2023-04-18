@@ -1,8 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import mongoose from "mongoose";
-import Basket, { IBasketModel, IBasket } from "../models/Basket.model";
-import BasketItem, { IBasketItemModel } from "../models/BasketItem.model";
-import BasketType, { IBasketTypeModel } from "../models/BasketType.model";
+import { Request, Response } from "express";
+import { IBasketModel, IBasket } from "../models/Basket.model";
 import BasketService from "../services/basket.service";
 
 // CREATE a new gift basket
