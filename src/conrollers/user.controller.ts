@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import User, { IUserModel } from "../models/User.model";
+import { IUserModel } from "../models/User.model";
 import UserService from "../services/user.service";
 
 // READ all users
@@ -63,7 +63,6 @@ export const softDeleteUserById = async (req: Request, res: Response): Promise<v
 	try {
 		const { id } = req.params;
 
-		const updatedFields = { deleted: true };
 		const updatedUser: IUserModel | null = await UserService.softDeleteUserById(id);
 
 		if (updatedUser) {
