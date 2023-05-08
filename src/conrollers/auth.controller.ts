@@ -29,9 +29,9 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 			res.cookie("jwt", result.token, {
 				httpOnly: true,
 				secure: false,
-				sameSite: "none",
+				sameSite: "lax",
 				maxAge: 60 * 60 * 1000
-			}); // Expires after 1 hour
+			});
 			res.status(200).json({ message: "User logged in successfully", token: result.token });
 		} else {
 			res.status(401).json({ message: "Invalid email or password" });

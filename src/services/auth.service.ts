@@ -34,7 +34,7 @@ class AuthService {
 			email,
 			passwordHash: hashedPassword,
 			deleted: false,
-			role: UserRole.ADMIN,
+			role: UserRole.ADMIN
 		});
 		const savedUser = await newUser.save();
 
