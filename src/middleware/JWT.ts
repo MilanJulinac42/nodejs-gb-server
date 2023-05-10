@@ -17,7 +17,6 @@ interface ITokenPayload {
 
 const authMiddleware = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
 	try {
-		console.log(req.cookies);
 		const token = req.cookies["jwt"];
 
 		// Check if token exists

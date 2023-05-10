@@ -12,6 +12,7 @@ interface CreateBasketInput {
 	giftBasketItems: { item: string; quantity: number }[];
 	basketType: string;
 	isSerbian: boolean;
+	imageUrl: string;
 }
 
 class BasketService {
@@ -22,7 +23,6 @@ class BasketService {
 		}));
 
 		const newBasket: IBasketModel = new Basket({ ...basket, giftBasketItems });
-
 		const savedBasket = await newBasket.save();
 
 		for (const giftBasketItemQuantity of savedBasket.giftBasketItems) {
@@ -47,7 +47,9 @@ class BasketService {
 	}
 
 	public async getBasketById(id: string): Promise<IBasketModel | null> {
-		return Basket.findById(id).populate("giftBasketItems.item", "name description price").populate("basketType", "name");
+		return Basket.findById(id)
+			.populate("giftBasketItems.item", "name description price")
+			.populate("basketType", "name");
 	}
 
 	public async updateBasketById(id: string, updatedFields: Partial<IBasket>): Promise<IBasketModel | null> {

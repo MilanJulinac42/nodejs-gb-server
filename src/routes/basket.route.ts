@@ -9,11 +9,12 @@ import {
 } from "../conrollers/basket.controller";
 import { isAdmin } from "../middleware/IsAdmin";
 import authMiddleware from "../middleware/JWT";
+import upload from "../config/multer";
 
 const router: Router = Router();
 
 // CREATE a new basket item
-router.post("/create", authMiddleware, isAdmin, createBasket);
+router.post("/create", upload.single("imageUpload"), createBasket);
 
 // READ all basket items
 router.get("/find-all", getAllBaskets);

@@ -1,11 +1,29 @@
 import { Request, Response } from "express";
 import { IBasketModel, IBasket } from "../models/Basket.model";
 import BasketService from "../services/basket.service";
+import { uploadImageToS3 } from "../services/imageUpload.service";
 
 // CREATE a new gift basket
 export const createBasket = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { name, description, price, profit, type, giftBasketItems, basketType, isSerbian } = req.body;
+
+		const folder = "basket/";
+		const file = req.file;
+
+		const test = JSON.parse(giftBasketItems);
+
+		if (!file) {
+			res.status(400).json({ error: "No file provided" });
+			return;
+		}
+
+		const imageUrl = await uploadImageToS3(folder, file);
+
+		if (!imageUrl) {
+			res.status(500).json({ erorr: "File failed to upload" });
+			return;
+		}
 
 		const savedBasket = await BasketService.createBasket({
 			name,
@@ -13,9 +31,10 @@ export const createBasket = async (req: Request, res: Response): Promise<void> =
 			price,
 			profit,
 			type,
-			giftBasketItems,
+			giftBasketItems: test,
 			basketType,
-			isSerbian
+			isSerbian,
+			imageUrl
 		});
 
 		res.status(201).json({ message: "Basket created", basket: savedBasket });
@@ -27,7 +46,6 @@ export const createBasket = async (req: Request, res: Response): Promise<void> =
 // READ all gift baskets
 export const getAllBaskets = async (req: Request, res: Response): Promise<void> => {
 	try {
-		
 		const baskets = await BasketService.getAllBaskets();
 
 		res.status(200).json({ message: "Baskets found", baskets });

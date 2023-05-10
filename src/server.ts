@@ -9,8 +9,9 @@ import giftBasketRoutes from "./routes/basket.route";
 import authRoutes from "./routes/auth.route";
 import cookieParser from "cookie-parser";
 import shoppingCartRoutes from "./routes/shoppingCart.route";
-const cors = require("cors");
+import imageUploadRoutes from "./routes/imageUpload.route";
 
+const cors = require("cors");
 const router = express();
 
 // Connect to MongoDB
@@ -57,6 +58,7 @@ const StartServer = () => {
 	});
 
 	// Routes
+	router.use(imageUploadRoutes);
 	router.use("/basket-item", basketItemRoutes);
 	router.use("/basket-type", basketTypeRoutes);
 	router.use("/gift-basket", giftBasketRoutes);

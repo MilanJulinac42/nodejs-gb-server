@@ -24,6 +24,7 @@ export interface IBasket {
 	giftBasketItems: IBasketItemQuantity[];
 	basketType: ObjectId;
 	isSerbian: boolean;
+	imageUrl: string;
 	deleted: boolean;
 	createdAt: Date;
 	updatedAt: Date;
@@ -59,6 +60,7 @@ const BasketSchema: Schema = new Schema(
 		],
 		basketType: { type: Schema.Types.ObjectId, ref: "BasketType" },
 		isSerbian: { type: Boolean, required: true, default: false },
+		imageUrl: { type: String, required: false },
 		deleted: { type: Boolean, required: true, default: false }
 	},
 	{ timestamps: true }
