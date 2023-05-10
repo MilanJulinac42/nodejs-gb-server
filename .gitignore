@@ -3,6 +3,7 @@ node_modules/
 dist/
 coverage/
 logs/
+uploads/
 *.log
 
 # Files
