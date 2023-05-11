@@ -14,7 +14,7 @@ import upload from "../config/multer";
 const router: Router = Router();
 
 // CREATE a new basket item
-router.post("/create", upload.single("imageUpload"), createBasket);
+router.post("/create", authMiddleware, isAdmin, upload.single("imageUpload"), createBasket);
 
 // READ all basket items
 router.get("/find-all", getAllBaskets);

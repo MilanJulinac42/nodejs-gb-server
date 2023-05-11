@@ -7,6 +7,7 @@ import { uploadImageToS3 } from "../services/imageUpload.service";
 export const createBasket = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { name, description, price, profit, type, giftBasketItems, basketType, isSerbian } = req.body;
+		console.log(req.body);
 
 		const folder = "basket/";
 		const file = req.file;
