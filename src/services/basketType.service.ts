@@ -11,6 +11,10 @@ class BasketTypeService {
 		return BasketType.find();
 	}
 
+	public async getBasketTypesForAdmin(): Promise<IBasketTypeModel[]> {
+		return BasketType.find({}, { name: 1, _id: 1 });
+	}
+
 	public async getBasketTypeById(id: string): Promise<IBasketTypeModel | null> {
 		return BasketType.findById(id);
 	}

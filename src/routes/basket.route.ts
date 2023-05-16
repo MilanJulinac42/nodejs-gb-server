@@ -23,7 +23,7 @@ router.get("/find-all", getAllBaskets);
 router.get("/find/:id", getBasketById);
 
 // UPDATE a basket item by ID
-router.patch("/update/:id", authMiddleware, isAdmin, updateBasketById);
+router.patch("/update/:id", authMiddleware, isAdmin, upload.single("imageUpload"), updateBasketById);
 
 // DELETE a basket item by ID
 router.delete("/delete/:id", authMiddleware, isAdmin, deleteBasket);

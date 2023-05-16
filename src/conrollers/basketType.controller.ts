@@ -17,10 +17,14 @@ export const createBasketType = async (req: Request, res: Response): Promise<voi
 	}
 };
 
-// READ all basket types
+// READ all basket types, with optional query parameter for admin view
 export const getBasketTypes = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const basketTypes: IBasketTypeModel[] = await BasketTypeService.getBasketTypes();
+		const isForAdminBasketCreation = req.query.adminBasketCreation === "true";
+
+		const basketTypes: IBasketTypeModel[] = isForAdminBasketCreation
+			? await BasketTypeService.getBasketTypesForAdmin()
+			: await BasketTypeService.getBasketTypes();
 
 		res.status(200).json({ basketTypes });
 	} catch (error) {

@@ -7,12 +7,11 @@ import { uploadImageToS3 } from "../services/imageUpload.service";
 export const createBasket = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { name, description, price, profit, type, giftBasketItems, basketType, isSerbian } = req.body;
-		console.log(req.body);
 
 		const folder = "basket/";
 		const file = req.file;
 
-		const test = JSON.parse(giftBasketItems);
+		const basketItemsParsed = JSON.parse(giftBasketItems);
 
 		if (!file) {
 			res.status(400).json({ error: "No file provided" });
@@ -32,7 +31,7 @@ export const createBasket = async (req: Request, res: Response): Promise<void> =
 			price,
 			profit,
 			type,
-			giftBasketItems: test,
+			giftBasketItems: basketItemsParsed,
 			basketType,
 			isSerbian,
 			imageUrl
@@ -76,9 +75,32 @@ export const getBasketById = async (req: Request, res: Response): Promise<void> 
 export const updateBasketById = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { id } = req.params;
+		const { name, description, price, profit, type, giftBasketItems, basketType, isSerbian } = req.body;
 
-		const updatedFields: Partial<IBasket> = req.body;
+		const folder = "basket/";
+		const file = req.file;
 
+		const basketItemsParsed = giftBasketItems ? JSON.parse(giftBasketItems) : undefined;
+
+		let imageUrl;
+		if (file) {
+			imageUrl = await uploadImageToS3(folder, file);
+			if (!imageUrl) {
+				res.status(500).json({ erorr: "File failed to upload" });
+				return;
+			}
+		}
+		const updatedFields: Partial<IBasket> = {
+			...(name && { name }),
+			...(description && { description }),
+			...(price && { price }),
+			...(profit && { profit }),
+			...(type && { type }),
+			...(basketItemsParsed && { giftBasketItems: basketItemsParsed }),
+			...(basketType && { basketType }),
+			...(isSerbian !== undefined && { isSerbian }),
+			...(imageUrl && { imageUrl })
+		};
 		const updatedBasket: IBasketModel | null = await BasketService.updateBasketById(id, updatedFields);
 
 		if (updatedBasket) {

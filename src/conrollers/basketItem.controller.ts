@@ -17,14 +17,18 @@ export const createBasketItem = async (req: Request, res: Response): Promise<voi
 	}
 };
 
-// READ all basket items
+// READ all basket items, with optional query parameter for admin view
 export const getBasketItems = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const basketItems: IBasketItemModel[] = await BasketItemService.getBasketItems();
+		const isForAdminBasketCreation = req.query.adminBasketCreation === "true";
+
+		const basketItems: IBasketItemModel[] = isForAdminBasketCreation
+			? await BasketItemService.getBasketItemsForAdmin()
+			: await BasketItemService.getBasketItems();
 
 		res.status(200).json({ basketItems });
 	} catch (error) {
-		res.status(500).json({ message: "Error retrieving basket items", error });
+		res.status(500).json({ message: "Error retrieving basket types", error });
 	}
 };
 
