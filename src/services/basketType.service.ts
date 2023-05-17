@@ -12,7 +12,7 @@ class BasketTypeService {
 	}
 
 	public async getBasketTypesForAdmin(): Promise<IBasketTypeModel[]> {
-		return BasketType.find({}, { name: 1, _id: 1 });
+		return BasketType.find({}, { name: 1, _id: 1, price: 1 });
 	}
 
 	public async getBasketTypeById(id: string): Promise<IBasketTypeModel | null> {

@@ -49,7 +49,7 @@ class BasketService {
 	public async getBasketById(id: string): Promise<IBasketModel | null> {
 		return Basket.findById(id)
 			.populate("giftBasketItems.item", "name description price")
-			.populate("basketType", "name");
+			.populate("basketType", "name price");
 	}
 
 	public async updateBasketById(id: string, updatedFields: Partial<IBasket>): Promise<IBasketModel | null> {
