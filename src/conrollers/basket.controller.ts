@@ -101,6 +101,7 @@ export const updateBasketById = async (req: Request, res: Response): Promise<voi
 			...(isSerbian !== undefined && { isSerbian }),
 			...(imageUrl && { imageUrl })
 		};
+
 		const updatedBasket: IBasketModel | null = await BasketService.updateBasketById(id, updatedFields);
 
 		if (updatedBasket) {
