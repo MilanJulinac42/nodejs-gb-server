@@ -1,6 +1,6 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
-enum OrderStatus {
+export enum OrderStatus {
 	CREATED = "created",
 	PENDING = "admin",
 	SHIPPED = "customer",
