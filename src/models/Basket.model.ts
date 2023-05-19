@@ -19,6 +19,7 @@ export interface IBasket {
 	profit: number;
 	inStock: number;
 	sold: number;
+	totalProfit: number;
 	liked: number;
 	type: GiftBasketType;
 	giftBasketItems: IBasketItemQuantity[];
@@ -40,6 +41,7 @@ const BasketSchema: Schema = new Schema(
 		profit: { type: Number, required: true },
 		inStock: { type: Number, required: false, default: 0 },
 		sold: { type: Number, required: false, default: 0 },
+		totalProfit: { type: Number, required: false, default: 0 },
 		liked: { type: Number, required: false, default: 0 },
 		type: {
 			type: String,

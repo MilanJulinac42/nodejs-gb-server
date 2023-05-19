@@ -6,7 +6,7 @@ import { uploadImageToS3 } from "../services/imageUpload.service";
 // CREATE a new gift basket
 export const createBasket = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const { name, description, price, profit, type, giftBasketItems, basketType, isSerbian } = req.body;
+		const { name, description, price, profit, type, giftBasketItems, basketType, isSerbian, inStock } = req.body;
 
 		const folder = "basket/";
 		const file = req.file;
@@ -34,7 +34,8 @@ export const createBasket = async (req: Request, res: Response): Promise<void> =
 			giftBasketItems: basketItemsParsed,
 			basketType,
 			isSerbian,
-			imageUrl
+			imageUrl,
+			inStock
 		});
 
 		res.status(201).json({ message: "Basket created", basket: savedBasket });
@@ -75,7 +76,7 @@ export const getBasketById = async (req: Request, res: Response): Promise<void> 
 export const updateBasketById = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const { id } = req.params;
-		const { name, description, price, profit, type, giftBasketItems, basketType, isSerbian } = req.body;
+		const { name, description, price, profit, type, giftBasketItems, basketType, isSerbian, inStock } = req.body;
 
 		const folder = "basket/";
 		const file = req.file;
@@ -99,6 +100,7 @@ export const updateBasketById = async (req: Request, res: Response): Promise<voi
 			...(basketItemsParsed && { giftBasketItems: basketItemsParsed }),
 			...(basketType && { basketType }),
 			...(isSerbian !== undefined && { isSerbian }),
+			...(inStock && { inStock }),
 			...(imageUrl && { imageUrl })
 		};
 

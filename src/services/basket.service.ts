@@ -8,6 +8,7 @@ interface CreateBasketInput {
 	description: string;
 	price: number;
 	profit: number;
+	inStock: number;
 	type: string;
 	giftBasketItems: { item: string; quantity: number }[];
 	basketType: string;
