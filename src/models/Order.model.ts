@@ -15,12 +15,19 @@ export enum OrderPaymentType {
 
 export interface IOrder {
 	user: ObjectId;
+	email: { type: String; required: false };
+	firstName: { type: String; required: false };
+	lastName: { type: String; required: false };
 	baskets: { basketId: ObjectId; quantity: number }[];
 	totalPrice: number;
 	stripePaymentIntentId: string;
 	orderStatus: OrderStatus;
 	paymentType: OrderPaymentType;
-	orderAddress: string;
+	street: { type: String; required: true };
+	city: { type: String; required: true };
+	state: { type: String; required: true };
+	zipCode: { type: String; required: true };
+	country: { type: String; required: true };
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -30,6 +37,9 @@ export interface IOrderModel extends IOrder, Document {}
 const OrderSchema: Schema = new Schema(
 	{
 		user: { type: Schema.Types.ObjectId, ref: "User", required: false },
+		email: { type: String, required: false },
+		firstName: { type: String, required: false },
+		lastName: { type: String, required: false },
 		baskets: [
 			{ basketId: { type: Schema.Types.ObjectId, ref: "Basket" }, quantity: { type: Number, required: true } }
 		],
@@ -42,7 +52,11 @@ const OrderSchema: Schema = new Schema(
 			default: OrderPaymentType.ON_DELIVERY,
 			required: true
 		},
-		orderAddress: { type: String, required: true }
+		street: { type: String, required: true },
+		city: { type: String, required: true },
+		state: { type: String, required: true },
+		zipCode: { type: String, required: true },
+		country: { type: String, required: true, default: "Serbia" }
 	},
 	{ timestamps: true }
 );
