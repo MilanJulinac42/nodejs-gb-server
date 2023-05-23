@@ -20,12 +20,10 @@ export interface IOrder {
 	lastName: { type: String; required: false };
 	baskets: { basketId: ObjectId; quantity: number }[];
 	totalPrice: number;
-	stripePaymentIntentId: string;
 	orderStatus: OrderStatus;
 	paymentType: OrderPaymentType;
 	street: { type: String; required: true };
 	city: { type: String; required: true };
-	state: { type: String; required: true };
 	zipCode: { type: String; required: true };
 	country: { type: String; required: true };
 	createdAt: Date;
