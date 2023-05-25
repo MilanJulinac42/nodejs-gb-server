@@ -2,8 +2,8 @@ import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
 export enum OrderStatus {
 	CREATED = "created",
-	PENDING = "admin",
-	SHIPPED = "customer",
+	PENDING = "pending",
+	SHIPPED = "shipped",
 	DELIVERED = "delivered",
 	CANCELLED = "cancelled"
 }
@@ -42,7 +42,6 @@ const OrderSchema: Schema = new Schema(
 			{ basketId: { type: Schema.Types.ObjectId, ref: "Basket" }, quantity: { type: Number, required: true } }
 		],
 		totalPrice: { type: Number, required: true },
-		stripePaymentIntentId: { type: String, required: true },
 		orderStatus: { type: String, enum: Object.values(OrderStatus), default: OrderStatus.CREATED, required: true },
 		paymentType: {
 			type: String,
@@ -52,7 +51,6 @@ const OrderSchema: Schema = new Schema(
 		},
 		street: { type: String, required: true },
 		city: { type: String, required: true },
-		state: { type: String, required: true },
 		zipCode: { type: String, required: true },
 		country: { type: String, required: true, default: "Serbia" }
 	},

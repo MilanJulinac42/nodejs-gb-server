@@ -5,7 +5,7 @@ interface CreateBasketInput {
 	email: string;
 	firstName: string;
 	lastName: string;
-	baskets: { basket: string; quantity: number }[];
+	baskets: { basketId: string; quantity: number }[];
 	totalPrice: number;
 	orderStatus: string;
 	street: string;
@@ -16,7 +16,7 @@ interface CreateBasketInput {
 class OrderService {
 	public async createOrder(order: CreateBasketInput): Promise<IOrderModel> {
 		const baskets = order.baskets.map((basket) => ({
-			item: new mongoose.Types.ObjectId(basket.basket),
+			basketId: basket.basketId,
 			quantity: basket.quantity
 		}));
 
@@ -34,8 +34,8 @@ class OrderService {
 		return Order.findById(id);
 	}
 
-	public async changeOrderStatus(id: string, status: OrderStatus): Promise<IOrderModel | null> {
-		return Order.findByIdAndUpdate(id, { $set: { status } }, { new: true });
+	public async changeOrderStatus(id: string, orderStatus: OrderStatus): Promise<IOrderModel | null> {
+		return Order.findByIdAndUpdate(id, { $set: { orderStatus } }, { new: true });
 	}
 
 	public async updateOrderById(id: string, updatedFields: Partial<IOrder>): Promise<IOrderModel | null> {

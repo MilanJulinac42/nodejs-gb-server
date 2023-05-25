@@ -57,9 +57,9 @@ export const changeOrderStatus = async (req: Request, res: Response): Promise<vo
 	try {
 		const { id } = req.params;
 
-		const status: OrderStatus = req.body;
+		const { orderStatus } = req.body as { orderStatus: OrderStatus };
 
-		const updatedOrder: IOrderModel | null = await OrderService.changeOrderStatus(id, status);
+		const updatedOrder: IOrderModel | null = await OrderService.changeOrderStatus(id, orderStatus);
 
 		if (updatedOrder) {
 			res.status(200).json({ message: "Order status changed succesfully", order: updatedOrder });
