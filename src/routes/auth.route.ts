@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { registerUser, loginUser, logoutUser } from "../conrollers/auth.controller";
 import createUserValidation from "../middleware/validation/userValidation";
+import { loginUserValidation } from "../middleware/validation/loginValidation";
 
 const router: Router = Router();
 
@@ -8,7 +9,7 @@ const router: Router = Router();
 router.post("/register", createUserValidation, registerUser);
 
 // LOGIN user
-router.post("/login", loginUser);
+router.post("/login", loginUserValidation, loginUser);
 
 // LOGOUT user
 router.post("/logout", logoutUser);
