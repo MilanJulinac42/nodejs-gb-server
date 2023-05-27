@@ -8,6 +8,7 @@ import {
 } from "../conrollers/user.controller";
 import { isAdmin } from "../middleware/IsAdmin";
 import authMiddleware from "../middleware/JWT";
+import objectIdValidation from "../middleware/validation/objectIdValidation";
 
 const router: Router = Router();
 
@@ -15,15 +16,15 @@ const router: Router = Router();
 router.get("/find-all", authMiddleware, isAdmin, getUsers);
 
 // READ a single user by ID
-router.get("/find/:id", authMiddleware, getUserById);
+router.get("/find/:id", objectIdValidation, authMiddleware, getUserById);
 
 // UPDATE a user by ID
-router.patch("/update/:id", authMiddleware, updateUserById);
+router.patch("/update/:id", objectIdValidation, authMiddleware, updateUserById);
 
 // DELETE a user by ID
-router.delete("/delete/:id", authMiddleware, isAdmin, deleteUserById);
+router.delete("/delete/:id", objectIdValidation, authMiddleware, isAdmin, deleteUserById);
 
 // SOFT DELETE a user by ID
-router.delete("/remove/:id", authMiddleware, softDeleteUserById);
+router.delete("/remove/:id", objectIdValidation, authMiddleware, softDeleteUserById);
 
 export default router;

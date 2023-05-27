@@ -10,6 +10,7 @@ import {
 import { isAdmin } from "../middleware/IsAdmin";
 import authMiddleware from "../middleware/JWT";
 import createBasketItemValidation from "../middleware/validation/basketItemValidation";
+import objectIdValidation from "../middleware/validation/objectIdValidation";
 
 const router: Router = Router();
 
@@ -20,15 +21,15 @@ router.post("/create", authMiddleware, createBasketItemValidation, isAdmin, crea
 router.get("/find-all", getBasketItems);
 
 // READ a single basket item by ID
-router.get("/find/:id", getBasketItemById);
+router.get("/find/:id", objectIdValidation, getBasketItemById);
 
 // UPDATE a basket item by ID
-router.patch("/update/:id", authMiddleware, isAdmin, updateBasketItemById);
+router.patch("/update/:id", objectIdValidation, authMiddleware, isAdmin, updateBasketItemById);
 
 // DELETE a basket item by ID
-router.delete("/delete/:id", authMiddleware, isAdmin, deleteBasketItemById);
+router.delete("/delete/:id", objectIdValidation, authMiddleware, isAdmin, deleteBasketItemById);
 
 // SOFT DELETE a basket item by ID
-router.delete("/remove/:id", authMiddleware, isAdmin, softDeleteBasketItemById);
+router.delete("/remove/:id", objectIdValidation, authMiddleware, isAdmin, softDeleteBasketItemById);
 
 export default router;
