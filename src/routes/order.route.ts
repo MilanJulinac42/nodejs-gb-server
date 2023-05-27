@@ -1,12 +1,13 @@
 import { Router } from "express";
+import { changeOrderStatus, createOrder, getOrder, getOrders, updateOrderById } from "../conrollers/order.controller";
 import authMiddleware from "../middleware/JWT";
 import { isAdmin } from "../middleware/IsAdmin";
-import { changeOrderStatus, createOrder, getOrder, getOrders, updateOrderById } from "../conrollers/order.controller";
+import createOrderValidation from "../middleware/validation/orderValidation";
 
 const router: Router = Router();
 
 // CREATE a new order
-router.post("/create", authMiddleware, isAdmin, createOrder);
+router.post("/create", createOrderValidation, authMiddleware, isAdmin, createOrder);
 
 // READ all orders
 router.get("/find-all", authMiddleware, isAdmin, getOrders);

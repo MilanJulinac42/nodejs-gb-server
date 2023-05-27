@@ -10,11 +10,12 @@ import {
 import { isAdmin } from "../middleware/IsAdmin";
 import authMiddleware from "../middleware/JWT";
 import upload from "../config/multer";
+import createBasketValidation from "../middleware/validation/basketValidation";
 
 const router: Router = Router();
 
 // CREATE a new basket item
-router.post("/create", authMiddleware, isAdmin, upload.single("imageUpload"), createBasket);
+router.post("/create", createBasketValidation, authMiddleware, isAdmin, upload.single("imageUpload"), createBasket);
 
 // READ all basket items
 router.get("/find-all", getAllBaskets);

@@ -9,11 +9,12 @@ import {
 } from "../conrollers/basketType.controller";
 import { isAdmin } from "../middleware/IsAdmin";
 import authMiddleware from "../middleware/JWT";
+import createBasketTypeValidation from "../middleware/validation/basketTypeValidation";
 
 const router: Router = Router();
 
 // CREATE a new basket type
-router.post("/create", authMiddleware, isAdmin, createBasketType);
+router.post("/create", createBasketTypeValidation, authMiddleware, isAdmin, createBasketType);
 
 // READ all basket types
 router.get("/find-all", getBasketTypes);
