@@ -1,6 +1,6 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
 
-enum GiftBasketType {
+export enum GiftBasketType {
 	COORPORATIVE = "COORPORATIVE",
 	HAPPY_BIRTHDAY = "HAPPY_BIRTHDAY",
 	LOVERS = "LOVERS",

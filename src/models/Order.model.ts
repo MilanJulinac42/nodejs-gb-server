@@ -15,9 +15,9 @@ export enum OrderPaymentType {
 
 export interface IOrder {
 	user: ObjectId;
-	email: { type: String; required: false };
-	firstName: { type: String; required: false };
-	lastName: { type: String; required: false };
+	email: { type: String; required: true };
+	firstName: { type: String; required: true };
+	lastName: { type: String; required: true };
 	baskets: { basketId: ObjectId; quantity: number }[];
 	totalPrice: number;
 	orderStatus: OrderStatus;
@@ -35,9 +35,9 @@ export interface IOrderModel extends IOrder, Document {}
 const OrderSchema: Schema = new Schema(
 	{
 		user: { type: Schema.Types.ObjectId, ref: "User", required: false },
-		email: { type: String, required: false },
-		firstName: { type: String, required: false },
-		lastName: { type: String, required: false },
+		email: { type: String, required: true },
+		firstName: { type: String, required: true },
+		lastName: { type: String, required: true },
 		baskets: [
 			{ basketId: { type: Schema.Types.ObjectId, ref: "Basket" }, quantity: { type: Number, required: true } }
 		],
