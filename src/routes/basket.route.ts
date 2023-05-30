@@ -16,7 +16,7 @@ import objectIdValidation from "../middleware/validation/objectIdValidation";
 const router: Router = Router();
 
 // CREATE a new basket item
-router.post("/create", createBasketValidation, authMiddleware, isAdmin, upload.single("imageUpload"), createBasket);
+router.post("/create", authMiddleware, isAdmin, upload.single("imageUpload"), createBasket);
 
 // READ all basket items
 router.get("/find-all", getAllBaskets);

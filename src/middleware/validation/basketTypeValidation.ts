@@ -9,7 +9,7 @@ const createBasketTypeValidation = (req: Request, res: Response, next: NextFunct
 		color: Joi.string().required(),
 		giftBasket: Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)),
 		isSerbian: Joi.boolean().required().default(false),
-		deleted: Joi.boolean().required().default(false)
+		deleted: Joi.boolean().default(false)
 	});
 
 	const { error } = basketTypeSchema.validate(req.body);
