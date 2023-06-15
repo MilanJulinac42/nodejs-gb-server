@@ -20,11 +20,14 @@ export const createBasketItem = async (req: Request, res: Response): Promise<voi
 // READ all basket items, with optional query parameter for admin view
 export const getBasketItems = async (req: Request, res: Response): Promise<void> => {
 	try {
+		const limit = parseInt(req.query.limit as string) || 10;
+		const page = parseInt(req.query.page as string) || 1;
+
 		const isForAdminBasketCreation = req.query.adminBasketCreation === "true";
 
-		const basketItems: IBasketItemModel[] = isForAdminBasketCreation
+		const basketItems = isForAdminBasketCreation
 			? await BasketItemService.getBasketItemsForAdmin()
-			: await BasketItemService.getBasketItems();
+			: await BasketItemService.getBasketItems(limit, page);
 
 		res.status(200).json({ basketItems });
 	} catch (error) {
