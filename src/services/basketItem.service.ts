@@ -7,8 +7,18 @@ class BasketItemService {
 		return newBasketItem.save();
 	}
 
-	public async getBasketItems(): Promise<IBasketItemModel[]> {
-		return BasketItem.find();
+	public async getBasketItems(
+		limit: number,
+		page: number
+	): Promise<{ basketItems: IBasketItemModel[] | null; total: number } | null> {
+		const query = BasketItem.find()
+			.skip((page - 1) * limit)
+			.limit(limit);
+
+		const basketItems = await query.exec();
+		const total = await BasketItem.countDocuments();
+
+		return { basketItems, total };
 	}
 
 	public async getBasketItemsForAdmin(): Promise<IBasketItemModel[]> {

@@ -7,8 +7,18 @@ class BasketTypeService {
 		return newBasketType.save();
 	}
 
-	public async getBasketTypes(): Promise<IBasketTypeModel[]> {
-		return BasketType.find();
+	public async getBasketTypes(
+		limit: number,
+		page: number
+	): Promise<{ basketTypes: IBasketTypeModel[] | null; total: number } | null> {
+		const query = BasketType.find()
+			.skip((page - 1) * limit)
+			.limit(limit);
+
+		const basketTypes = await query.exec();
+		const total = await BasketType.countDocuments();
+
+		return { basketTypes, total };
 	}
 
 	public async getBasketTypesForAdmin(): Promise<IBasketTypeModel[]> {
