@@ -43,8 +43,20 @@ class BasketService {
 		return savedBasket;
 	}
 
-	public async getAllBaskets(): Promise<IBasketModel[] | null> {
-		return Basket.find().populate("giftBasketItems.item", "name price").populate("basketType", "name");
+	public async getAllBaskets(
+		limit: number,
+		page: number
+	): Promise<{ baskets: IBasketModel[] | null; total: number } | null> {
+		const query = Basket.find()
+			.populate("giftBasketItems.item", "name price")
+			.populate("basketType", "name")
+			.skip((page - 1) * limit)
+			.limit(limit);
+
+		const baskets = await query.exec();
+		const total = await Basket.countDocuments();
+
+		return { baskets, total };
 	}
 
 	public async getBasketById(id: string): Promise<IBasketModel | null> {

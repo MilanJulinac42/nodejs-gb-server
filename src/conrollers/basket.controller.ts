@@ -47,7 +47,10 @@ export const createBasket = async (req: Request, res: Response): Promise<void> =
 // READ all gift baskets
 export const getAllBaskets = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const baskets = await BasketService.getAllBaskets();
+		const limit = parseInt(req.query.limit as string) || 10;
+		const page = parseInt(req.query.page as string) || 1;
+
+		const baskets = await BasketService.getAllBaskets(limit, page);
 
 		res.status(200).json({ message: "Baskets found", baskets });
 	} catch (error) {
