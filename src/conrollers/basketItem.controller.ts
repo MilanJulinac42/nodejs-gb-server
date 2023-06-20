@@ -22,12 +22,14 @@ export const getBasketItems = async (req: Request, res: Response): Promise<void>
 	try {
 		const limit = parseInt(req.query.limit as string) || 10;
 		const page = parseInt(req.query.page as string) || 1;
+		const sortBy = req.query.sortBy as string;
+		const sortOrder = req.query.sortOrder as string;
 
 		const isForAdminBasketCreation = req.query.adminBasketCreation === "true";
 
 		const basketItems = isForAdminBasketCreation
 			? await BasketItemService.getBasketItemsForAdmin()
-			: await BasketItemService.getBasketItems(limit, page);
+			: await BasketItemService.getBasketItems(limit, page, sortBy, sortOrder);
 
 		res.status(200).json({ basketItems });
 	} catch (error) {
