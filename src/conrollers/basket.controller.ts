@@ -49,8 +49,10 @@ export const getAllBaskets = async (req: Request, res: Response): Promise<void> 
 	try {
 		const limit = parseInt(req.query.limit as string) || 10;
 		const page = parseInt(req.query.page as string) || 1;
+		const sortBy = req.query.sortBy as string;
+		const sortOrder = req.query.sortOrder as string;
 
-		const baskets = await BasketService.getAllBaskets(limit, page);
+		const baskets = await BasketService.getAllBaskets(limit, page, sortBy, sortOrder);
 
 		res.status(200).json({ message: "Baskets found", baskets });
 	} catch (error) {

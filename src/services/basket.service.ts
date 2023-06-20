@@ -45,13 +45,21 @@ class BasketService {
 
 	public async getAllBaskets(
 		limit: number,
-		page: number
+		page: number,
+		sortBy: string,
+		sortOrder: string
 	): Promise<{ baskets: IBasketModel[] | null; total: number } | null> {
 		const query = Basket.find()
 			.populate("giftBasketItems.item", "name price")
 			.populate("basketType", "name")
 			.skip((page - 1) * limit)
 			.limit(limit);
+
+		if (sortOrder === "desc") {
+			query.sort({ [sortBy]: -1 });
+		} else {
+			query.sort({ [sortBy]: 1 });
+		}
 
 		const baskets = await query.exec();
 		const total = await Basket.countDocuments();
