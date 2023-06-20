@@ -9,11 +9,19 @@ class BasketTypeService {
 
 	public async getBasketTypes(
 		limit: number,
-		page: number
+		page: number,
+		sortBy: string,
+		sortOrder: string
 	): Promise<{ basketTypes: IBasketTypeModel[] | null; total: number } | null> {
 		const query = BasketType.find()
 			.skip((page - 1) * limit)
 			.limit(limit);
+
+		if (sortOrder === "desc") {
+			query.sort({ [sortBy]: -1 });
+		} else {
+			query.sort({ [sortBy]: 1 });
+		}
 
 		const basketTypes = await query.exec();
 		const total = await BasketType.countDocuments();
