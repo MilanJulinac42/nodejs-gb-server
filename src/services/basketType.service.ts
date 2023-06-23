@@ -11,11 +11,51 @@ class BasketTypeService {
 		limit: number,
 		page: number,
 		sortBy: string,
-		sortOrder: string
+		sortOrder: string,
+		name?: string,
+		priceFrom?: number,
+		priceTo?: number,
+		color?: string
 	): Promise<{ basketTypes: IBasketTypeModel[] | null; total: number } | null> {
-		const query = BasketType.find()
-			.skip((page - 1) * limit)
-			.limit(limit);
+		const query = BasketType.find();
+
+		if (name) {
+			query.where("name", { $regex: name, $options: "i" });
+		}
+
+		if (priceFrom !== undefined && priceTo !== undefined) {
+			query.where("price").gte(priceFrom).lte(priceTo);
+		} else if (priceFrom !== undefined) {
+			query.where("price").gte(priceFrom);
+		} else if (priceTo !== undefined) {
+			query.where("price").lte(priceTo);
+		}
+
+		if (color) {
+			query.where("color", color);
+		}
+
+		const totalQuery = BasketType.find();
+
+		if (name) {
+			totalQuery.where("name", { $regex: name, $options: "i" });
+		}
+
+		if (priceFrom !== undefined && priceTo !== undefined) {
+			totalQuery.where("price").gte(priceFrom).lte(priceTo);
+		} else if (priceFrom !== undefined) {
+			totalQuery.where("price").gte(priceFrom);
+		} else if (priceTo !== undefined) {
+			totalQuery.where("price").lte(priceTo);
+		}
+
+		if (color) {
+			totalQuery.where("color", color);
+		}
+
+		const total = await totalQuery.countDocuments();
+
+		query.skip((page - 1) * limit).limit(limit);
 
 		if (sortOrder === "desc") {
 			query.sort({ [sortBy]: -1 });
@@ -24,7 +64,6 @@ class BasketTypeService {
 		}
 
 		const basketTypes = await query.exec();
-		const total = await BasketType.countDocuments();
 
 		return { basketTypes, total };
 	}

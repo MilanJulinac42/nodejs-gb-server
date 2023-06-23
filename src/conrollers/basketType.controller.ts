@@ -24,12 +24,16 @@ export const getBasketTypes = async (req: Request, res: Response): Promise<void>
 		const page = parseInt(req.query.page as string) || 1;
 		const sortBy = req.query.sortBy as string;
 		const sortOrder = req.query.sortOrder as string;
+		const name = req.query.name as string;
+		const priceFrom = parseInt(req.query.priceFrom as string) || undefined;
+		const priceTo = parseInt(req.query.priceTo as string) || undefined;
+		const color = req.query.color as string;
 
 		const isForAdminBasketCreation = req.query.adminBasketCreation === "true";
 
 		const basketTypes = isForAdminBasketCreation
 			? await BasketTypeService.getBasketTypesForAdmin()
-			: await BasketTypeService.getBasketTypes(limit, page, sortBy, sortOrder);
+			: await BasketTypeService.getBasketTypes(limit, page, sortBy, sortOrder, name, priceFrom, priceTo, color);
 
 		res.status(200).json({ basketTypes });
 	} catch (error) {
