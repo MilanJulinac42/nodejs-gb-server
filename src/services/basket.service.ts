@@ -47,9 +47,104 @@ class BasketService {
 		limit: number,
 		page: number,
 		sortBy: string,
-		sortOrder: string
+		sortOrder: string,
+		name?: string,
+		priceFrom?: number,
+		priceTo?: number,
+		profitFrom?: number,
+		profitTo?: number,
+		type?: string,
+		inStockFrom?: number,
+		inStockTo?: number,
+		soldFrom?: number,
+		soldTo?: number
 	): Promise<{ baskets: IBasketModel[] | null; total: number } | null> {
-		const query = Basket.find()
+		const query = Basket.find();
+
+		if (name) {
+			query.where("name", { $regex: name, $options: "i" });
+		}
+
+		if (priceFrom !== undefined && priceTo !== undefined) {
+			query.where("price").gte(priceFrom).lte(priceTo);
+		} else if (priceFrom !== undefined) {
+			query.where("price").gte(priceFrom);
+		} else if (priceTo !== undefined) {
+			query.where("price").lte(priceTo);
+		}
+
+		if (profitFrom !== undefined && profitTo !== undefined) {
+			query.where("profit").gte(profitFrom).lte(profitTo);
+		} else if (profitFrom !== undefined) {
+			query.where("profit").gte(profitFrom);
+		} else if (profitTo !== undefined) {
+			query.where("profit").lte(profitTo);
+		}
+
+		if (inStockFrom !== undefined && inStockTo !== undefined) {
+			query.where("inStock").gte(inStockFrom).lte(inStockTo);
+		} else if (inStockFrom !== undefined) {
+			query.where("inStock").gte(inStockFrom);
+		} else if (inStockTo !== undefined) {
+			query.where("inStock").lte(inStockTo);
+		}
+
+		if (soldFrom !== undefined && soldTo !== undefined) {
+			query.where("sold").gte(soldFrom).lte(soldTo);
+		} else if (soldFrom !== undefined) {
+			query.where("sold").gte(soldFrom);
+		} else if (soldTo !== undefined) {
+			query.where("sold").lte(soldTo);
+		}
+
+		if (type) {
+			query.where("type", type);
+		}
+
+		const totalQuery = Basket.find();
+
+		if (name) {
+			totalQuery.where("name", { $regex: name, $options: "i" });
+		}
+
+		if (priceFrom !== undefined && priceTo !== undefined) {
+			totalQuery.where("price").gte(priceFrom).lte(priceTo);
+		} else if (priceFrom !== undefined) {
+			totalQuery.where("price").gte(priceFrom);
+		} else if (priceTo !== undefined) {
+			totalQuery.where("price").lte(priceTo);
+		}
+
+		if (profitFrom !== undefined && profitTo !== undefined) {
+			totalQuery.where("profit").gte(profitFrom).lte(profitTo);
+		} else if (profitFrom !== undefined) {
+			totalQuery.where("profit").gte(profitFrom);
+		} else if (profitTo !== undefined) {
+			totalQuery.where("profit").lte(profitTo);
+		}
+
+		if (inStockFrom !== undefined && inStockTo !== undefined) {
+			totalQuery.where("inStock").gte(inStockFrom).lte(inStockTo);
+		} else if (inStockFrom !== undefined) {
+			totalQuery.where("inStock").gte(inStockFrom);
+		} else if (inStockTo !== undefined) {
+			totalQuery.where("inStock").lte(inStockTo);
+		}
+
+		if (soldFrom !== undefined && soldTo !== undefined) {
+			totalQuery.where("sold").gte(soldFrom).lte(soldTo);
+		} else if (soldFrom !== undefined) {
+			totalQuery.where("sold").gte(soldFrom);
+		} else if (soldTo !== undefined) {
+			totalQuery.where("sold").lte(soldTo);
+		}
+
+		if (type) {
+			query.where("type", type);
+		}
+
+		const total = await totalQuery.countDocuments();
+		query
 			.populate("giftBasketItems.item", "name price")
 			.populate("basketType", "name")
 			.skip((page - 1) * limit)
@@ -62,7 +157,6 @@ class BasketService {
 		}
 
 		const baskets = await query.exec();
-		const total = await Basket.countDocuments();
 
 		return { baskets, total };
 	}

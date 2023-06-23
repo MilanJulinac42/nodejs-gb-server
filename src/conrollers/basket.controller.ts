@@ -51,8 +51,33 @@ export const getAllBaskets = async (req: Request, res: Response): Promise<void> 
 		const page = parseInt(req.query.page as string) || 1;
 		const sortBy = req.query.sortBy as string;
 		const sortOrder = req.query.sortOrder as string;
+		const name = req.query.name as string;
+		const priceFrom = parseInt(req.query.priceFrom as string) || undefined;
+		const priceTo = parseInt(req.query.priceTo as string) || undefined;
+		const profitFrom = parseInt(req.query.profitFrom as string) || undefined;
+		const profitTo = parseInt(req.query.profitTo as string) || undefined;
+		const type = req.query.type as string;
+		const inStockFrom = parseInt(req.query.inStockFrom as string) || undefined;
+		const inStockTo = parseInt(req.query.inStockTo as string) || undefined;
+		const soldFrom = parseInt(req.query.soldFrom as string) || undefined;
+		const soldTo = parseInt(req.query.soldTo as string) || undefined;
 
-		const baskets = await BasketService.getAllBaskets(limit, page, sortBy, sortOrder);
+		const baskets = await BasketService.getAllBaskets(
+			limit,
+			page,
+			sortBy,
+			sortOrder,
+			name,
+			priceFrom,
+			priceTo,
+			profitFrom,
+			profitTo,
+			type,
+			inStockFrom,
+			inStockTo,
+			soldFrom,
+			soldTo
+		);
 
 		res.status(200).json({ message: "Baskets found", baskets });
 	} catch (error) {
