@@ -121,3 +121,20 @@ export const softDeleteBasketTypeById = async (req: Request, res: Response): Pro
 		res.status(500).json({ message: "Error deleting basket type", error });
 	}
 };
+
+// SOFT DELETE basket type by id
+export const restoreBasketTypeById = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const { id } = req.params;
+
+		const restoredBasketType: IBasketTypeModel | null = await BasketTypeService.restoreBasketTypeById(id);
+
+		if (restoredBasketType) {
+			res.status(200).json({ message: "Basket type restored succesfully", basket: restoredBasketType });
+		} else {
+			res.status(404).json({ message: "Basket type not found" });
+		}
+	} catch (error) {
+		res.status(500).json({ message: "Error restoring basket type", error });
+	}
+};

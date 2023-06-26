@@ -6,7 +6,7 @@ import {
 	updateBasketTypeById,
 	deleteBasketTypeById,
 	softDeleteBasketTypeById,
-	restoreBasketItemById
+	restoreBasketTypeById
 } from "../conrollers/basketType.controller";
 import { isAdmin } from "../middleware/IsAdmin";
 import authMiddleware from "../middleware/JWT";
