@@ -38,6 +38,6 @@ router.patch(
 router.delete("/delete/:id", objectIdValidation, authMiddleware, isAdmin, deleteBasket);
 
 // SOFT DELETE a basket item by ID
-router.delete("/remove/:id", objectIdValidation, authMiddleware, isAdmin, softDeleteBasketById);
+router.patch("/remove/:id", objectIdValidation, authMiddleware, isAdmin, softDeleteBasketById);
 
 export default router;

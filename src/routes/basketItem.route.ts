@@ -30,6 +30,6 @@ router.patch("/update/:id", objectIdValidation, authMiddleware, isAdmin, updateB
 router.delete("/delete/:id", objectIdValidation, authMiddleware, isAdmin, deleteBasketItemById);
 
 // SOFT DELETE a basket item by ID
-router.delete("/remove/:id", objectIdValidation, authMiddleware, isAdmin, softDeleteBasketItemById);
+router.patch("/remove/:id", objectIdValidation, authMiddleware, isAdmin, softDeleteBasketItemById);
 
 export default router;
