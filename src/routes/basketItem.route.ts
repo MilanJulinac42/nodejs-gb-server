@@ -32,4 +32,7 @@ router.delete("/delete/:id", objectIdValidation, authMiddleware, isAdmin, delete
 // SOFT DELETE a basket item by ID
 router.patch("/remove/:id", objectIdValidation, authMiddleware, isAdmin, softDeleteBasketItemById);
 
+// RESTORE soft deleted basket item by ID
+router.patch("/restore/:id", objectIdValidation, authMiddleware, isAdmin, softDeleteBasketItemById);
+
 export default router;
