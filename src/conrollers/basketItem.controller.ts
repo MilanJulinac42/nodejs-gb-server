@@ -109,11 +109,7 @@ export const softDeleteBasketItemById = async (req: Request, res: Response): Pro
 	try {
 		const { id } = req.params;
 
-		const deletedBasketItem: IBasketItemModel | null = await BasketItem.findByIdAndUpdate(
-			id,
-			{ deleted: true },
-			{ new: true }
-		);
+		const deletedBasketItem: IBasketItemModel | null = await BasketItemService.softDeleteBasketItemById(id);
 
 		if (deletedBasketItem) {
 			res.status(200).json({ message: "Basket item deleted succesfully", basket: deletedBasketItem });
@@ -122,5 +118,22 @@ export const softDeleteBasketItemById = async (req: Request, res: Response): Pro
 		}
 	} catch (error) {
 		res.status(500).json({ message: "Error deleting basket item", error });
+	}
+};
+
+// RESTORE basket item by id
+export const restoreBasketItemById = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const { id } = req.params;
+
+		const restoredBasketItem: IBasketItemModel | null = await BasketItemService.restoreBasketItemById(id);
+
+		if (restoredBasketItem) {
+			res.status(200).json({ message: "Basket item restored succesfully", basket: restoredBasketItem });
+		} else {
+			res.status(404).json({ message: "Basket item not found" });
+		}
+	} catch (error) {
+		res.status(500).json({ message: "Error restoring basket item", error });
 	}
 };
