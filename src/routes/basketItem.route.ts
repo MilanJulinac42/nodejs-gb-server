@@ -5,7 +5,8 @@ import {
 	getBasketItemById,
 	updateBasketItemById,
 	deleteBasketItemById,
-	softDeleteBasketItemById
+	softDeleteBasketItemById,
+	restoreBasketItemById
 } from "../conrollers/basketItem.controller";
 import { isAdmin } from "../middleware/IsAdmin";
 import authMiddleware from "../middleware/JWT";
@@ -33,6 +34,6 @@ router.delete("/delete/:id", objectIdValidation, authMiddleware, isAdmin, delete
 router.patch("/remove/:id", objectIdValidation, authMiddleware, isAdmin, softDeleteBasketItemById);
 
 // RESTORE soft deleted basket item by ID
-router.patch("/restore/:id", objectIdValidation, authMiddleware, isAdmin, softDeleteBasketItemById);
+router.patch("/restore/:id", objectIdValidation, authMiddleware, isAdmin, restoreBasketItemById);
 
 export default router;

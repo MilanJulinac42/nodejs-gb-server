@@ -202,6 +202,10 @@ class BasketService {
 	public async softDeleteBasketById(id: string): Promise<IBasketModel | null> {
 		return Basket.findByIdAndUpdate(id, { deleted: true }, { new: true });
 	}
+
+	public async restoreBasketById(id: string): Promise<IBasketModel | null> {
+		return Basket.findByIdAndUpdate(id, { deleted: false }, { new: true });
+	}
 }
 
 export default new BasketService();
