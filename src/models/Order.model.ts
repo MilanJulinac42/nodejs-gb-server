@@ -18,7 +18,7 @@ export interface IOrder {
 	email: { type: String; required: true };
 	firstName: { type: String; required: true };
 	lastName: { type: String; required: true };
-	baskets: { basketId: ObjectId; quantity: number }[];
+	baskets: { basketId: ObjectId; name: string; quantity: number }[];
 	totalPrice: number;
 	orderStatus: OrderStatus;
 	paymentType: OrderPaymentType;
@@ -39,7 +39,11 @@ const OrderSchema: Schema = new Schema(
 		firstName: { type: String, required: true },
 		lastName: { type: String, required: true },
 		baskets: [
-			{ basketId: { type: Schema.Types.ObjectId, ref: "Basket" }, quantity: { type: Number, required: true } }
+			{
+				basketId: { type: Schema.Types.ObjectId, ref: "Basket" },
+				name: { type: String, required: true },
+				quantity: { type: Number, required: true }
+			}
 		],
 		totalPrice: { type: Number, required: true },
 		orderStatus: { type: String, enum: Object.values(OrderStatus), default: OrderStatus.CREATED, required: true },

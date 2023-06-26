@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
 import Order, { IOrder, IOrderModel, OrderStatus } from "../models/Order.model";
+import Basket from "../models/Basket.model";
 
 interface CreateBasketInput {
 	email: string;
 	firstName: string;
 	lastName: string;
-	baskets: { basketId: string; quantity: number }[];
+	baskets: { basketId: string; name: string; quantity: number }[];
 	totalPrice: number;
 	orderStatus: string;
 	street: string;
@@ -15,10 +15,16 @@ interface CreateBasketInput {
 
 class OrderService {
 	public async createOrder(order: CreateBasketInput): Promise<IOrderModel> {
-		const baskets = order.baskets.map((basket) => ({
-			basketId: basket.basketId,
-			quantity: basket.quantity
-		}));
+		const baskets = await Promise.all(
+			order.baskets.map(async (basket) => {
+				const basketData = await Basket.findById(basket.basketId);
+				return {
+					basketId: basket.basketId,
+					name: basketData?.name || "",
+					quantity: basket.quantity
+				};
+			})
+		);
 
 		const newOrder: IOrderModel = new Order({ ...order, baskets });
 		const savedOrder = await newOrder.save();
