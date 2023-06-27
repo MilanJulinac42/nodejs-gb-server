@@ -2,11 +2,11 @@ import mongoose, { Document, ObjectId, Schema } from "mongoose";
 import { GiftBasketType } from "./Basket.model";
 
 export enum OrderStatus {
-	CREATED = "created",
-	PENDING = "pending",
-	SHIPPED = "shipped",
-	DELIVERED = "delivered",
-	CANCELLED = "cancelled"
+	CREATED = "CREATED",
+	PENDING = "PENDING",
+	SHIPPED = "SHIPPED",
+	DELIVERED = "DELIVERED",
+	CANCELLED = "CANCELLED"
 }
 
 export enum OrderPaymentType {
