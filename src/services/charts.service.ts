@@ -61,6 +61,42 @@ class ChartsService {
 			throw new Error("Internal server error");
 		}
 	}
+
+	public async getRevenueByCategory(startDate: string, endDate: string) {
+		try {
+			const aggregationPipeline: any[] = [
+				{
+					$match: {
+						createdAt: {
+							$gte: new Date(new Date(startDate).setHours(0, 0, 0)),
+							$lt: new Date(new Date(endDate).setHours(23, 59, 59))
+						}
+					}
+				},
+				{
+					$unwind: "$baskets"
+				},
+				{
+					$group: {
+						_id: "$baskets.type",
+						totalRevenue: { $sum: { $multiply: ["$baskets.quantity", "$baskets.price"] } }
+					}
+				},
+				{
+					$sort: {
+						totalRevenue: -1
+					}
+				}
+			];
+
+			const revenueByCategory = await OrderModel.aggregate(aggregationPipeline);
+
+			return revenueByCategory;
+		} catch (error) {
+			console.error("Error fetching revenue by category:", error);
+			throw new Error("Internal server error");
+		}
+	}
 }
 
 export default new ChartsService();

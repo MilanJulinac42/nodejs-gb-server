@@ -35,3 +35,21 @@ export const getTopSellingProducts = async (req: Request, res: Response) => {
 		res.status(500).json({ message: "Internal server error" });
 	}
 };
+
+export const getRevenueByCategory = async (req: Request, res: Response) => {
+	try {
+		const inputDateFormat = "dd-MM-yyyy";
+		const startDateInput = (req.query.startDate as string) || "01-01-1970";
+		const endDateInput = (req.query.endDate as string) || format(new Date(), inputDateFormat);
+
+		const startDate = format(parse(startDateInput, inputDateFormat, new Date()), "yyyy-MM-dd");
+		const endDate = format(parse(endDateInput, inputDateFormat, new Date()), "yyyy-MM-dd");
+
+		const revenueByCategory = await ChartsService.getRevenueByCategory(startDate, endDate);
+
+		res.json(revenueByCategory);
+	} catch (error) {
+		console.error("Error fetching revenue by category:", error);
+		res.status(500).json({ message: "Internal server error" });
+	}
+};
