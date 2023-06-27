@@ -23,10 +23,18 @@ export const getSalesStatistics = async (req: Request, res: Response) => {
 export const getTopSellingProducts = async (req: Request, res: Response) => {
 	try {
 		const { sortBy, limit } = req.query;
+		const inputDateFormat = "dd-MM-yyyy";
+		const startDateInput = (req.query.startDate as string) || "01-01-1970";
+		const endDateInput = (req.query.endDate as string) || format(new Date(), inputDateFormat);
+
+		const startDate = format(parse(startDateInput, inputDateFormat, new Date()), "yyyy-MM-dd");
+		const endDate = format(parse(endDateInput, inputDateFormat, new Date()), "yyyy-MM-dd");
 
 		const topSellingProducts = await ChartsService.getTopSellingProducts(
 			sortBy as "quantity" | "revenue",
-			parseInt(limit as string) || 5
+			parseInt(limit as string) || 5,
+			startDate,
+			endDate
 		);
 
 		res.json(topSellingProducts);

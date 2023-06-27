@@ -1,4 +1,4 @@
-import OrderModel from "../models/Order.model";
+import OrderModel, { OrderStatus } from "../models/Order.model";
 
 class ChartsService {
 	public async getSalesStatistics(startDate: string, endDate: string) {
@@ -6,6 +6,7 @@ class ChartsService {
 			const salesStatistics = await OrderModel.aggregate([
 				{
 					$match: {
+						orderStatus: OrderStatus.DELIVERED,
 						createdAt: {
 							$gte: new Date(new Date(startDate).setHours(0, 0, 0)),
 							$lt: new Date(new Date(endDate).setHours(23, 59, 59))
@@ -29,9 +30,23 @@ class ChartsService {
 		}
 	}
 
-	public async getTopSellingProducts(sortBy: "quantity" | "revenue", limit: number = 5) {
+	public async getTopSellingProducts(
+		sortBy: "quantity" | "revenue",
+		limit: number = 5,
+		startDate: string,
+		endDate: string
+	) {
 		try {
 			const aggregationPipeline: any[] = [
+				{
+					$match: {
+						orderStatus: OrderStatus.DELIVERED,
+						createdAt: {
+							$gte: new Date(new Date(startDate).setHours(0, 0, 0)),
+							$lt: new Date(new Date(endDate).setHours(23, 59, 59))
+						}
+					}
+				},
 				{
 					$unwind: "$baskets"
 				},
@@ -40,7 +55,7 @@ class ChartsService {
 						_id: "$baskets._id",
 						basketName: { $first: "$baskets.name" },
 						totalQuantity: { $sum: "$baskets.quantity" },
-						totalRevenue: { $sum: { $multiply: ["$baskets.quantity", "$totalPrice"] } }
+						totalRevenue: { $sum: { $multiply: ["$baskets.quantity", "$baskets.price"] } }
 					}
 				},
 				{
@@ -67,6 +82,7 @@ class ChartsService {
 			const aggregationPipeline: any[] = [
 				{
 					$match: {
+						orderStatus: OrderStatus.DELIVERED,
 						createdAt: {
 							$gte: new Date(new Date(startDate).setHours(0, 0, 0)),
 							$lt: new Date(new Date(endDate).setHours(23, 59, 59))
