@@ -1,4 +1,5 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
+import { GiftBasketType } from "./Basket.model";
 
 export enum OrderStatus {
 	CREATED = "created",
@@ -18,7 +19,7 @@ export interface IOrder {
 	email: { type: String; required: true };
 	firstName: { type: String; required: true };
 	lastName: { type: String; required: true };
-	baskets: { basketId: ObjectId; name: string; quantity: number }[];
+	baskets: { basketId: ObjectId; name: string; quantity: number; type: GiftBasketType }[];
 	totalPrice: number;
 	orderStatus: OrderStatus;
 	paymentType: OrderPaymentType;
@@ -42,7 +43,8 @@ const OrderSchema: Schema = new Schema(
 			{
 				basketId: { type: Schema.Types.ObjectId, ref: "Basket" },
 				name: { type: String, required: true },
-				quantity: { type: Number, required: true }
+				quantity: { type: Number, required: true },
+				type: { type: String, enum: Object.values(GiftBasketType), required: true }
 			}
 		],
 		totalPrice: { type: Number, required: true },

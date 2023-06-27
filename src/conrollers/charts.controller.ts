@@ -19,3 +19,19 @@ export const getSalesStatistics = async (req: Request, res: Response) => {
 		res.status(500).json({ message: "Internal server error" });
 	}
 };
+
+export const getTopSellingProducts = async (req: Request, res: Response) => {
+	try {
+		const { sortBy, limit } = req.query;
+
+		const topSellingProducts = await ChartsService.getTopSellingProducts(
+			sortBy as "quantity" | "revenue",
+			parseInt(limit as string) || 5
+		);
+
+		res.json(topSellingProducts);
+	} catch (error) {
+		console.error("Error fetching top-selling products:", error);
+		res.status(500).json({ message: "Internal server error" });
+	}
+};

@@ -28,6 +28,39 @@ class ChartsService {
 			throw new Error("Internal server error");
 		}
 	}
+
+	public async getTopSellingProducts(sortBy: "quantity" | "revenue", limit: number = 5) {
+		try {
+			const aggregationPipeline: any[] = [
+				{
+					$unwind: "$baskets"
+				},
+				{
+					$group: {
+						_id: "$baskets._id",
+						basketName: { $first: "$baskets.name" },
+						totalQuantity: { $sum: "$baskets.quantity" },
+						totalRevenue: { $sum: { $multiply: ["$baskets.quantity", "$totalPrice"] } }
+					}
+				},
+				{
+					$sort: {
+						[sortBy === "quantity" ? "totalQuantity" : "totalRevenue"]: -1
+					}
+				},
+				{
+					$limit: limit
+				}
+			];
+
+			const topSellingProducts = await OrderModel.aggregate(aggregationPipeline);
+
+			return topSellingProducts;
+		} catch (error) {
+			console.error("Error fetching top-selling products:", error);
+			throw new Error("Internal server error");
+		}
+	}
 }
 
 export default new ChartsService();
