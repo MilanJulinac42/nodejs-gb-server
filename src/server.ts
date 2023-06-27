@@ -11,6 +11,7 @@ import cookieParser from "cookie-parser";
 import shoppingCartRoutes from "./routes/shoppingCart.route";
 import imageUploadRoutes from "./routes/imageUpload.route";
 import orderRoutes from "./routes/order.route";
+import chartRoutes from "./routes/charts.route";
 
 const cors = require("cors");
 const router = express();
@@ -66,6 +67,7 @@ const StartServer = () => {
 	router.use("/auth", authRoutes);
 	router.use("/shopping-cart", shoppingCartRoutes);
 	router.use("/order", orderRoutes);
+	router.use("/chart", chartRoutes);
 
 	// Healthcheck
 	router.get("/ping", (req, res, next) => res.status(200).json({ message: "ping" }));
