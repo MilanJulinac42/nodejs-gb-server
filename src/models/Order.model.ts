@@ -16,17 +16,17 @@ export enum OrderPaymentType {
 
 export interface IOrder {
 	user: ObjectId;
-	email: { type: String; required: true };
-	firstName: { type: String; required: true };
-	lastName: { type: String; required: true };
+	email: { type: string; required: true };
+	firstName: { type: string; required: true };
+	lastName: { type: string; required: true };
 	baskets: { basketId: ObjectId; name: string; quantity: number; type: GiftBasketType; price: number }[];
 	totalPrice: number;
 	orderStatus: OrderStatus;
 	paymentType: OrderPaymentType;
-	street: { type: String; required: true };
-	city: { type: String; required: true };
-	zipCode: { type: String; required: true };
-	country: { type: String; required: true };
+	street: { type: string; required: true };
+	city: { type: string; required: true };
+	zipCode: { type: string; required: true };
+	country: { type: string; required: true };
 	createdAt: Date;
 	updatedAt: Date;
 }
