@@ -9,7 +9,7 @@ export interface ISettings {
 export interface ISettingsModel extends ISettings, Document {}
 
 const SettingsSchema: Schema = new Schema({
-	heroTitle: { type: String, required: true },
+	heroTitle: { type: String, required: true, unique: true },
 	giftBasketsGallery: [
 		{
 			basketId: { type: Schema.Types.ObjectId, ref: "Basket" },
@@ -19,5 +19,7 @@ const SettingsSchema: Schema = new Schema({
 		}
 	]
 });
+
+SettingsSchema.index({ heroTitle: 1 }, { unique: true });
 
 export default mongoose.model<ISettingsModel>("Settings", SettingsSchema);
