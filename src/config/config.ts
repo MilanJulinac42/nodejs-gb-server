@@ -1,5 +1,5 @@
 import dontenv from "dotenv";
-import { W } from 'mongodb';
+import { W } from "mongodb";
 
 dontenv.config();
 
@@ -9,12 +9,12 @@ const MONGO_HOSTNAME = process.env.MONGO_HOSTNAME || "";
 const MONGO_DATABASE = process.env.MONGO_DATABASE || "";
 
 const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-  family: 4,
-  retryWrites: true,
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	serverSelectionTimeoutMS: 5000,
+	socketTimeoutMS: 45000,
+	family: 4,
+	retryWrites: true,
 	w: "majority" as W | undefined
 };
 

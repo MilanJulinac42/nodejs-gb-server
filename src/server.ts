@@ -12,8 +12,8 @@ import shoppingCartRoutes from "./routes/shoppingCart.route";
 import imageUploadRoutes from "./routes/imageUpload.route";
 import orderRoutes from "./routes/order.route";
 import chartRoutes from "./routes/charts.route";
+import cors from "cors";
 
-const cors = require("cors");
 const router = express();
 
 // Connect to MongoDB
