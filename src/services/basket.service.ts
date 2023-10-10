@@ -206,6 +206,10 @@ class BasketService {
 	public async restoreBasketById(id: string): Promise<IBasketModel | null> {
 		return Basket.findByIdAndUpdate(id, { deleted: false }, { new: true });
 	}
+
+	public async getSettingsBaskets(): Promise<IBasketModel[] | null> {
+		return Basket.find({}, "basketId, imageUrl, name, type, price");
+	}
 }
 
 export default new BasketService();

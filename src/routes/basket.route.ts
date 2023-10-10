@@ -44,4 +44,7 @@ router.patch("/remove/:id", objectIdValidation, authMiddleware, isAdmin, softDel
 // RESTORE soft deleted basket by ID
 router.patch("/restore/:id", objectIdValidation, authMiddleware, isAdmin, restoreBasketById);
 
+// GET baskets for settings gallery
+router.get("/settings-baskets");
+
 export default router;

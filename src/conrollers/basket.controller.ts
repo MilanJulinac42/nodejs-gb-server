@@ -195,3 +195,13 @@ export const restoreBasketById = async (req: Request, res: Response): Promise<vo
 		res.status(500).json({ message: "Error restoring basket", error });
 	}
 };
+
+export const getSettingsBaskets = async (req: Request, res: Response): Promise<void> => {
+	try {
+		const settingsBaskets = await BasketService.getSettingsBaskets();
+
+		res.status(200).json({ message: "Baskets found", baskets: settingsBaskets });
+	} catch (error) {
+		res.status(500).json({ message: "Error retrieving baskets", error });
+	}
+};
