@@ -208,7 +208,7 @@ class BasketService {
 	}
 
 	public async getSettingsBaskets(): Promise<IBasketModel[] | null> {
-		return Basket.find({}, "basketId, imageUrl, name, type, price");
+		return Basket.find({}, "basketId imageUrl name type price");
 	}
 }
 
