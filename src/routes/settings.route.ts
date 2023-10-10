@@ -9,7 +9,9 @@ const router: Router = Router();
 router.post("/create", authMiddleware, isAdmin, createSettings);
 
 // READ settings
-router.get("/find", authMiddleware, isAdmin, getSettings);
+router.get("/find", getSettings);
 
 // UPDATE settings
 router.patch("/update-settings", authMiddleware, isAdmin, updateSettings);
+
+export default router;

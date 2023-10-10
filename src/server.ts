@@ -12,6 +12,7 @@ import shoppingCartRoutes from "./routes/shoppingCart.route";
 import imageUploadRoutes from "./routes/imageUpload.route";
 import orderRoutes from "./routes/order.route";
 import chartRoutes from "./routes/charts.route";
+import settingsRoutes from "./routes/settings.route";
 import cors from "cors";
 
 const router = express();
@@ -68,6 +69,7 @@ const StartServer = () => {
 	router.use("/shopping-cart", shoppingCartRoutes);
 	router.use("/order", orderRoutes);
 	router.use("/chart", chartRoutes);
+	router.use("/settings", settingsRoutes);
 
 	// Healthcheck
 	router.get("/ping", (req, res, next) => res.status(200).json({ message: "ping" }));

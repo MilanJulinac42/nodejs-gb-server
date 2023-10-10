@@ -3,7 +3,7 @@ import { GiftBasketType } from "./Basket.model";
 
 export interface ISettings {
 	heroTitle: string;
-	giftBasketsGallery: { basketId: ObjectId; name: string; type: GiftBasketType; price: number }[];
+	giftBasketsGallery: { basketId: ObjectId; name: string; type: GiftBasketType; price: number; imageUrl: string }[];
 }
 
 export interface ISettingsModel extends ISettings, Document {}
@@ -15,7 +15,8 @@ const SettingsSchema: Schema = new Schema({
 			basketId: { type: Schema.Types.ObjectId, ref: "Basket" },
 			name: { type: String, required: true },
 			type: { type: String, enum: Object.values(GiftBasketType), required: true },
-			price: { type: Number, required: true }
+			price: { type: Number, required: true },
+			imageUrl: { type: String, required: true }
 		}
 	]
 });

@@ -2,7 +2,7 @@ import Settings, { ISettings, ISettingsModel } from "../models/Settings.model";
 
 interface CreateSettingsInput {
 	heroTitle: string;
-	giftBasketsGallery: { basketId: string; name: string; type: string; price: number }[];
+	giftBasketsGallery: { basketId: string; name: string; type: string; price: number; imageUrl: string }[];
 }
 
 class SettingsService {
