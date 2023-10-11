@@ -1,5 +1,4 @@
 import Settings, { ISettings, ISettingsModel } from "../models/Settings.model";
-import mongoose from "mongoose";
 
 interface CreateSettingsInput {
 	heroTitle: string;
@@ -8,19 +7,9 @@ interface CreateSettingsInput {
 
 class SettingsService {
 	public async createSettings(settings: CreateSettingsInput): Promise<ISettingsModel> {
-		const existingSettings = await Settings.findOne({});
-
-		if (existingSettings) {
-			existingSettings.heroTitle = settings.heroTitle;
-			// existingSettings.giftBasketsGallery = settings.giftBasketsGallery;
-
-			const updatedSettings = await existingSettings.save();
-			return updatedSettings;
-		} else {
-			const newSettings: ISettingsModel = new Settings(settings);
-			const savedSettings = await newSettings.save();
-			return savedSettings;
-		}
+		const newSettings: ISettingsModel = new Settings(settings);
+		const savedSettings = await newSettings.save();
+		return savedSettings;
 	}
 
 	public async getSettings(): Promise<ISettingsModel | null> {
