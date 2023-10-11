@@ -36,6 +36,8 @@ export const getSettings = async (req: Request, res: Response): Promise<void> =>
 // UPDATE settings
 export const updateSettings = async (req: Request, res: Response): Promise<void> => {
 	try {
+		console.log("RA");
+
 		const { heroTitle, giftBasketsGallery } = req.body;
 
 		const updatedFields: Partial<ISettingsModel> = {
