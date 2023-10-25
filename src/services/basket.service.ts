@@ -210,6 +210,10 @@ class BasketService {
 	public async getSettingsBaskets(): Promise<IBasketModel[] | null> {
 		return Basket.find({}, "basketId imageUrl name type price");
 	}
+
+	public async getBasketsNames(): Promise<IBasketModel[] | null> {
+		return Basket.find({}, "basketId name");
+	}
 }
 
 export default new BasketService();

@@ -7,7 +7,8 @@ import {
 	deleteBasket,
 	softDeleteBasketById,
 	restoreBasketById,
-	getSettingsBaskets
+	getSettingsBaskets,
+	getBasketsNames
 } from "../conrollers/basket.controller";
 import { isAdmin } from "../middleware/IsAdmin";
 import authMiddleware from "../middleware/JWT";
@@ -47,5 +48,8 @@ router.patch("/restore/:id", objectIdValidation, authMiddleware, isAdmin, restor
 
 // GET baskets for settings gallery
 router.get("/settings-baskets", getSettingsBaskets);
+
+// GET baskets names
+router.get("/baskets-names", getBasketsNames);
 
 export default router;
