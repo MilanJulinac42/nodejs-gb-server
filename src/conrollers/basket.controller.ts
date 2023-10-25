@@ -208,7 +208,9 @@ export const getSettingsBaskets = async (req: Request, res: Response): Promise<v
 
 export const getBasketsNames = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const basketsNames = await BasketService.getBasketsNames();
+		const searchQuery = req.query.search as string;
+
+		const basketsNames = await BasketService.getBasketsNames(searchQuery);
 
 		res.status(200).json({ message: "Baskets found", baskets: basketsNames });
 	} catch (error) {

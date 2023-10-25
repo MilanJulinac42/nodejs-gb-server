@@ -211,8 +211,10 @@ class BasketService {
 		return Basket.find({}, "basketId imageUrl name type price");
 	}
 
-	public async getBasketsNames(): Promise<IBasketModel[] | null> {
-		return Basket.find({}, "basketId name");
+	public async getBasketsNames(searchQuery: string): Promise<IBasketModel[] | null> {
+		const filter = searchQuery ? { name: { $regex: searchQuery, $options: "i" } } : {};
+
+		return Basket.find(filter, "basketId name");
 	}
 }
 
